@@ -1,4 +1,7 @@
-export const metadata = { title: '設定' };
+export const metadata = {
+	title: '設定',
+	description: 'テーマの切り替えや表示モードの調整など、アプリの見た目をカスタマイズできます。',
+};
 
 export default function Settings() {
 	return (

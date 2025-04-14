@@ -1,6 +1,10 @@
 export const revalidate = 60;	// 60秒ごとに再生成される（ISR）
 
-export const metadata = { title: 'お知らせ' };
+export const metadata = {
+	title: 'お知らせ',
+	description: 'アプリの最新情報やアップデート内容をお知らせします。開発の進捗やリリース内容をご確認いただけます。',
+};
+
 export default async function NewsPage() {
 	// fetchで外部データ取得（cache: 'force-cache' は revalidateと併用）
 	const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
