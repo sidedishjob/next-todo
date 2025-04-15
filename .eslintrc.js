@@ -23,8 +23,10 @@ module.exports = {
 				tabWidth: 4,
 				trailingComma: 'all',
 				printWidth: 100,
+				jsxSingleQuote: false, // ✅ JSX属性はダブルクォートにする
 			},
 		],
+		'jsx-quotes': ['error', 'prefer-double'], // ✅ JSX内は " を強制
 		'react/react-in-jsx-scope': 'off', // ✅ React 17以降では不要
 	},
 };
