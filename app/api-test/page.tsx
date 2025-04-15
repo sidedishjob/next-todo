@@ -1,18 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import useSWR, { mutate } from 'swr';
 import { Todo } from '@/types/todo';
+import { fetcher } from '@/lib/fetcher';
 
 export default function ApiTestPage() {
-	const [todos, setTodos] = useState<Todo[]>([]);
+	// const [todos, setTodos] = useState<Todo[]>([]);
+	const { data: todos, error, isLoading } = useSWR<Todo[]>('/api/todos', fetcher);
 	const [newTitle, setNewTitle] = useState<string>('');
 
-	// APIからTodoを取得
-	const fetchTodos = async () => {
-		const res = await fetch('api/todos');
-		const data = await res.json();
-		setTodos(data);
-	};
+	// // APIからTodoを取得
+	// const fetchTodos = async () => {
+	// 	const res = await fetch('api/todos');
+	// 	const data = await res.json();
+	// 	setTodos(data);
+	// };
 
 	// 新しいTodoを追加
 	const addTodo = async () => {
@@ -24,7 +27,8 @@ export default function ApiTestPage() {
 		});
 		setNewTitle('');
 		// 登録した内容を再表示
-		await fetchTodos();
+		// await fetchTodos();
+		mutate('/api/todos'); // SWRのキャッシュ更新+再取得
 	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,9 +36,9 @@ export default function ApiTestPage() {
 		addTodo();
 	};
 
-	useEffect(() => {
-		fetchTodos();
-	}, []);
+	// useEffect(() => {
+	// 	fetchTodos();
+	// }, []);
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">
@@ -57,8 +61,11 @@ export default function ApiTestPage() {
 				</div>
 			</form>
 
+			{isLoading && <p className="text-gray-500">読み込み中...</p>}
+			{error && <p className="text-red-500">エラーが発生しました</p>}
+
 			<ul className="text-gray-600 dark:text-gray-400 transition-colors duration-300 space-y-2">
-				{todos.map((todo) => (
+				{todos?.map((todo) => (
 					<li key={todo.id} className="border-b pb-2 rounded">
 						<p className="font-semibold">{todo.title}</p>
 					</li>
