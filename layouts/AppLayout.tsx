@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { FiHome, FiArrowLeft, FiSettings, FiBook, FiTrello, FiSun, FiMoon } from 'react-icons/fi';
+import { FiHome, FiArrowLeft, FiSettings, FiBook, FiTrello, FiSun, FiMoon, FiXCircle } from 'react-icons/fi';
 import { cn } from '@/lib/utils';
 import useDarkMode from '@/hooks/useDarkMode';
 
@@ -16,6 +16,7 @@ const getPageTitle = (pathname: string) => {
 	if (pathname === '/settings') return '設定';
 	if (pathname === '/about') return 'アプリについて';
 	if (pathname === '/news') return 'お知らせ';
+	if (pathname === '/api-test') return 'APIテスト';
 	return 'ページ';
 };
 
@@ -87,7 +88,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
 						)}
 						aria-label="news"
 					>
-						<FiTrello  className="w-5 h-5" />
+						<FiTrello className="w-5 h-5" />
 					</button>
 					{/* ダークモード切り替え */}
 					<button
@@ -100,6 +101,17 @@ export default function AppLayout({ children }: AppLayoutProps) {
 						) : (
 							<FiMoon className="w-5 h-5" />
 						)}
+					</button>
+					{/* APIテスト */}
+					<button
+						onClick={() => router.push('/api-test')}
+						className={cn(
+							!isActive('/api-test') && 'text-red-400 hover:text-red-700',
+							isActive('/api-test') && 'text-blue-600 font-bold',
+						)}
+						aria-label="api-test"
+					>
+						<FiXCircle className="w-5 h-5" />
 					</button>
 				</div>
 
