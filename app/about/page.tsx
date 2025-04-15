@@ -1,6 +1,7 @@
 export const metadata = {
 	title: 'このアプリについて',
-	description: 'このアプリは、React と Next.js のスキル習得を目的としたシンプルなTodoアプリです。機能や目的を紹介します。',
+	description:
+		'このアプリは、React と Next.js のスキル習得を目的としたシンプルなTodoアプリです。機能や目的を紹介します。',
 };
 
 // 完全に静的な内容のページ（SSG対象）
@@ -11,8 +12,10 @@ export default function AboutPage() {
 				このアプリについて
 			</h2>
 			<p className="text-gray-600 dark:text-gray-400 transition-colors duration-300">
-				このアプリは、ReactやNext.js、TypeScriptなどモダンなweb記述の学習を目的に<br />開発されています。
+				このアプリは、ReactやNext.js、TypeScriptなどモダンなweb記述の学習を目的に
+				<br />
+				開発されています。
 			</p>
 		</div>
 	);
-};
+}

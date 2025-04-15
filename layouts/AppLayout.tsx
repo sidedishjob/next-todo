@@ -2,7 +2,16 @@
 
 import { ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { FiHome, FiArrowLeft, FiSettings, FiBook, FiTrello, FiSun, FiMoon, FiXCircle } from 'react-icons/fi';
+import {
+	FiHome,
+	FiArrowLeft,
+	FiSettings,
+	FiBook,
+	FiTrello,
+	FiSun,
+	FiMoon,
+	FiXCircle,
+} from 'react-icons/fi';
 import { cn } from '@/lib/utils';
 import useDarkMode from '@/hooks/useDarkMode';
 
@@ -125,4 +134,4 @@ export default function AppLayout({ children }: AppLayoutProps) {
 			<main className="p-4 sm:p-6 md:p-8">{children}</main>
 		</div>
 	);
-};
+}

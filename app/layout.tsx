@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="ja" suppressHydrationWarning>
 			<body className="bg-white text-black dark:bg-zinc-900 dark:text-white transition-colors">
 				<ThemeProvider>
-					<AppLayout >{children}</AppLayout>
+					<AppLayout>{children}</AppLayout>
 				</ThemeProvider>
 			</body>
 		</html>

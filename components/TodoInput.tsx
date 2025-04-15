@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 import { todoTitleSchema } from '@/lib/validation/todoSchema';
@@ -45,4 +45,4 @@ export default function TodoInput({ add }: TodoInputProps) {
 			{error && <p className="text-red-500 text-sm ml-1">{error}</p>}
 		</form>
 	);
-};
+}

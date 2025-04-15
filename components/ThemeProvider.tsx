@@ -11,4 +11,4 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 	useDarkMode();
 
 	return <>{children}</>;
-} 
+}

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 import { getSetting, saveSetting } from '@/db/indexeddb';
@@ -36,4 +36,4 @@ export default function useDarkMode() {
 	};
 
 	return { isDarkMode, toggleDarkMode };
-};
+}

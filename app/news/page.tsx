@@ -1,8 +1,9 @@
-export const revalidate = 60;	// 60秒ごとに再生成される（ISR）
+export const revalidate = 60; // 60秒ごとに再生成される（ISR）
 
 export const metadata = {
 	title: 'お知らせ',
-	description: 'アプリの最新情報やアップデート内容をお知らせします。開発の進捗やリリース内容をご確認いただけます。',
+	description:
+		'アプリの最新情報やアップデート内容をお知らせします。開発の進捗やリリース内容をご確認いただけます。',
 };
 
 export default async function NewsPage() {
@@ -25,6 +26,5 @@ export default async function NewsPage() {
 				))}
 			</ul>
 		</div>
-	
 	);
 }

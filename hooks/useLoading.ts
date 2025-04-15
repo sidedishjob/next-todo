@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useCallback } from 'react';
 
@@ -16,4 +16,4 @@ export default function useLoading(initial: boolean = true) {
 		startLoading,
 		stopLoading,
 	};
-};
+}

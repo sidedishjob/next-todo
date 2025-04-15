@@ -14,7 +14,14 @@ interface TodoAppUIProps {
 	remove: (id: number) => Promise<void>;
 }
 
-export default function TodoAppUI({ todos, isLoading, add, updateTitle, toggleTodo, remove }: TodoAppUIProps) {
+export default function TodoAppUI({
+	todos,
+	isLoading,
+	add,
+	updateTitle,
+	toggleTodo,
+	remove,
+}: TodoAppUIProps) {
 	return (
 		<div className={'p-4 sm:p-6 md:p-8'}>
 			<div className="mx-auto max-w-3xl bg-card dark:bg-card-dark shadow-lg rounded-lg p-4 sm:p-6 transition-colors duration-300">
@@ -41,4 +48,4 @@ export default function TodoAppUI({ todos, isLoading, add, updateTitle, toggleTo
 			</div>
 		</div>
 	);
-};
+}

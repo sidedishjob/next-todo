@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import useLoading from './useLoading';
@@ -77,4 +77,4 @@ export default function useTodos() {
 		toggleTodo: handleToggleTodo,
 		remove,
 	};
-};
+}

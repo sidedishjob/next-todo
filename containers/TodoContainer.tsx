@@ -17,4 +17,4 @@ export default function TodoContainer() {
 			remove={remove}
 		/>
 	);
-};
+}

@@ -12,7 +12,7 @@ export default function ApiTestPage() {
 		const res = await fetch('api/todos');
 		const data = await res.json();
 		setTodos(data);
-	}
+	};
 
 	// 新しいTodoを追加
 	const addTodo = async () => {
@@ -20,7 +20,7 @@ export default function ApiTestPage() {
 		await fetch('api/todos', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ title: newTitle })
+			body: JSON.stringify({ title: newTitle }),
 		});
 		setNewTitle('');
 		// 登録した内容を再表示
@@ -50,12 +50,8 @@ export default function ApiTestPage() {
 						onChange={(e) => setNewTitle(e.target.value)}
 						placeholder="新しいタスクを入力..."
 						className="input flex-grow mr-2 transition-colors duration-300"
-						/>
-					<button
-						type="submit"
-						className="btn btn-primary"
-						disabled={!newTitle.trim()}
-					>
+					/>
+					<button type="submit" className="btn btn-primary" disabled={!newTitle.trim()}>
 						追加
 					</button>
 				</div>

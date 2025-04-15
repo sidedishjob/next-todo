@@ -53,7 +53,9 @@ export default function TodoDetailClient() {
 					<span className="font-semibold">ステータス：</span>
 					<span
 						className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${
-							todo.completed ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'
+							todo.completed
+								? 'bg-green-100 text-green-700'
+								: 'bg-gray-200 text-gray-600'
 						}`}
 					>
 						{todo.completed ? '完了' : '未完了'}

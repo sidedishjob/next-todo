@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 	const { title } = await request.json();
 
 	if (!title || typeof title !== 'string') {
-		return NextResponse.json({ error: 'Invalid title' }, { status: 400});
+		return NextResponse.json({ error: 'Invalid title' }, { status: 400 });
 	}
 
 	const newTodo = addTodo(title);
