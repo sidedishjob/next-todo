@@ -43,17 +43,10 @@ export default function TodoItem({ todo, updateTitle, toggleTodo, remove }: Todo
 
 	// 編集モードに入る前に幅を計算してから状態を更新
 	const startEditing = () => {
-		if (hiddenSpanRef.current && containerRef.current) {
-			const containerWidth = containerRef.current.clientWidth;
-			const textWidth = hiddenSpanRef.current.offsetWidth + 20;
-			const availableSpace = containerWidth - 120;
-			const optimalWidth = Math.min(textWidth, availableSpace);
-
-			// 先に幅を設定してから編集モードに切り替え
-			setInputWidth(`${optimalWidth}px`);
-		}
+		recalculateInputWidth();
 
 		setEditTitle(todo.title);
+
 		recalculateInputWidth();
 		setIsEditing(true);
 	};
@@ -65,6 +58,7 @@ export default function TodoItem({ todo, updateTitle, toggleTodo, remove }: Todo
 			const textWidth = hiddenSpanRef.current.offsetWidth + 20; // テキスト幅+余白
 			const availableSpace = containerWidth - 120; // チェックボックス&削除ボタン領域
 			const optimalWidth = Math.min(textWidth, availableSpace);
+			// 先に幅を設定してから編集モードに切り替え
 			setInputWidth(`${optimalWidth}px`);
 		}
 	};

@@ -1,41 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import useTodos from '@/hooks/useTodos';
-import { Todo } from '@/types/todo';
+import useTodoById from '@/hooks/useTodoById';
 import { LoadingSpinner } from '@/components/TodoAnimations';
 
 export default function TodoDetailClient() {
 	const params = useParams();
-	const { getById } = useTodos();
-	const [todo, setTodo] = useState<Todo | undefined>();
-	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [notFound, setNotFound] = useState<boolean>(false);
+	const id = Number(params?.id);
 
-	useEffect(() => {
-		const fetchTodo = async () => {
-			const id = Number(params?.id);
-			if (!id) return;
-
-			setIsLoading(true);
-			const result = await getById(id);
-
-			if (result) {
-				setTodo(result);
-				setNotFound(false);
-			} else {
-				setNotFound(true);
-			}
-			setIsLoading(false);
-		};
-
-		fetchTodo();
-	}, [params?.id, getById]);
+	const { todo, isLoading, error } = useTodoById(id);
 
 	if (isLoading) return <LoadingSpinner />;
 
-	if (!todo) return <p className="text-gray-500">該当するTodoは存在しません。</p>;
+	if (error || !todo) return <p className="text-gray-500">該当するTodoは存在しません。</p>;
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">
