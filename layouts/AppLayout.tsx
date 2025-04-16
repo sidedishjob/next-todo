@@ -29,10 +29,24 @@ const getPageTitle = (pathname: string) => {
 	return 'ページ';
 };
 
+// ナビゲーションメニュー定義（データ駆動化）
+const navItems = [
+	{ href: '/', icon: FiHome, label: 'ホーム' },
+	{ href: '/settings', icon: FiSettings, label: '設定' },
+	{ href: '/about', icon: FiBook, label: 'アプリについて' },
+	{ href: '/news', icon: FiTrello, label: 'お知らせ' },
+	{
+		href: '/api-test',
+		icon: FiXCircle,
+		label: 'APIテスト',
+		extraClass: 'text-red-400 hover:text-red-700',
+	},
+];
+
 export default function AppLayout({ children }: AppLayoutProps) {
+	const { isDark, toggleTheme } = useDarkMode();
 	const router = useRouter();
 	const pathname = usePathname();
-	const { isDarkMode, toggleDarkMode } = useDarkMode();
 
 	const pageTitle = getPageTitle(pathname);
 	const isHome = pathname === '/';
@@ -55,72 +69,28 @@ export default function AppLayout({ children }: AppLayoutProps) {
 						</button>
 					)}
 
-					{/* ホーム */}
-					<button
-						onClick={() => router.push('/')}
-						className={cn(
-							!isActive('/') && 'text-gray-400 hover:text-gray-700',
-							isActive('/') && 'text-blue-600 font-bold',
-						)}
-						aria-label="ホーム"
-					>
-						<FiHome className="w-5 h-5" />
-					</button>
-					{/* 設定 */}
-					<button
-						onClick={() => router.push('/settings')}
-						className={cn(
-							!isActive('/settings') && 'text-gray-400 hover:text-gray-700',
-							isActive('/settings') && 'text-blue-600 font-bold',
-						)}
-						aria-label="設定"
-					>
-						<FiSettings className="w-5 h-5" />
-					</button>
-					{/* アプリについて */}
-					<button
-						onClick={() => router.push('/about')}
-						className={cn(
-							!isActive('/about') && 'text-gray-400 hover:text-gray-700',
-							isActive('/about') && 'text-blue-600 font-bold',
-						)}
-						aria-label="About"
-					>
-						<FiBook className="w-5 h-5" />
-					</button>
-					{/* お知らせ */}
-					<button
-						onClick={() => router.push('/news')}
-						className={cn(
-							!isActive('/news') && 'text-gray-400 hover:text-gray-700',
-							isActive('/news') && 'text-blue-600 font-bold',
-						)}
-						aria-label="news"
-					>
-						<FiTrello className="w-5 h-5" />
-					</button>
+					{/* 各ナビゲーションボタン */}
+					{navItems.map(({ href, icon: Icon, label, extraClass }) => (
+						<button
+							key={href}
+							onClick={() => router.push(href)}
+							aria-label={label}
+							className={cn(
+								!isActive(href) &&
+									(extraClass ?? 'text-gray-400 hover:text-gray-700'),
+								isActive(href) && 'text-blue-600 font-bold',
+							)}
+						>
+							<Icon className="w-5 h-5" />
+						</button>
+					))}
 					{/* ダークモード切り替え */}
 					<button
-						onClick={toggleDarkMode}
+						onClick={toggleTheme}
 						className="text-gray-400 dark:text-yellow-500"
 						aria-label="ダークモード切り替え"
 					>
-						{isDarkMode ? (
-							<FiSun className="w-5 h-5" />
-						) : (
-							<FiMoon className="w-5 h-5" />
-						)}
-					</button>
-					{/* APIテスト */}
-					<button
-						onClick={() => router.push('/api-test')}
-						className={cn(
-							!isActive('/api-test') && 'text-red-400 hover:text-red-700',
-							isActive('/api-test') && 'text-blue-600 font-bold',
-						)}
-						aria-label="api-test"
-					>
-						<FiXCircle className="w-5 h-5" />
+						{isDark ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
 					</button>
 				</div>
 

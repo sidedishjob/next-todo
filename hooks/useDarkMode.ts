@@ -1,39 +1,43 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getSetting, saveSetting } from '@/db/indexeddb';
+import useSWR, { mutate } from 'swr';
+import { fetcher } from '@/lib/fetcher';
+import { API_ROUTES } from '@/lib/apiRoutes';
+import { useEffect } from 'react';
+
+type ThemeValue = 'light' | 'dark';
+type ThemeResponse = { theme: ThemeValue };
 
 /**
  * ダークモード設定を管理するカスタムフック
  */
 export default function useDarkMode() {
-	const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+	const { data, error, isLoading } = useSWR<ThemeResponse>(API_ROUTES.settings.theme, fetcher);
+	const theme = data?.theme;
+	const isDark = theme === 'dark';
 
-	// 初回レンダリング時に設定を取得
-	useEffect(() => {
-		const fetchDarkMode = async (): Promise<void> => {
-			const mode = (await getSetting('darkMode')) as 'dark' | 'light' | null;
-			setIsDarkMode(mode === 'dark');
-		};
-		fetchDarkMode();
-	}, []);
+	// ダークモードのトグル
+	const toggleTheme = async () => {
+		const newTheme: ThemeValue = isDark ? 'light' : 'dark';
 
-	// 状態が変更されたらDOMに反映
+		await fetch(API_ROUTES.settings.theme, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ theme: newTheme }),
+		});
+		mutate(API_ROUTES.settings.theme);
+	};
+
 	useEffect(() => {
+		if (!theme) return;
+
 		const root = document.documentElement;
-		if (isDarkMode) {
+		if (theme === 'dark') {
 			root.classList.add('dark');
 		} else {
 			root.classList.remove('dark');
 		}
-	}, [isDarkMode]);
+	}, [theme]);
 
-	// ダークモードの切り替え
-	const toggleDarkMode = async (): Promise<void> => {
-		const newMode = isDarkMode ? 'light' : 'dark';
-		await saveSetting('darkMode', newMode);
-		setIsDarkMode(newMode === 'dark');
-	};
-
-	return { isDarkMode, toggleDarkMode };
+	return { theme, isDark, isLoading, error, toggleTheme };
 }
