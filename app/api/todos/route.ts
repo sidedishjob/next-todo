@@ -1,52 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Todo } from '@/types/todo';
+import { getTodos, addTodo, updateTodo, toggleTodo, deleteTodo } from '@/lib/mockData';
 
-let todos: Todo[] = [
-	{
-		id: 1,
-		title: 'Learn Next.js API',
-		completed: false,
-		createdAt: new Date().toISOString(),
-		updatedAt: new Date().toISOString(),
-	},
-];
-
+// 全件取得
 export async function GET() {
-	// 全てのTodoを返す
-	return NextResponse.json(todos);
+	return NextResponse.json(getTodos());
 }
 
+// 追加
 export async function POST(req: Request) {
 	// リクエストボディからtitleを抽出
 	const { title } = await req.json();
 	if (!title || typeof title !== 'string') {
 		return NextResponse.json({ error: 'Invalid title' }, { status: 400 });
 	}
-	const newTodo: Todo = {
-		id: Date.now(),
-		title,
-		completed: false,
-		createdAt: new Date().toISOString(),
-		updatedAt: new Date().toISOString(),
-	};
-	todos.push(newTodo);
+	const newTodo = addTodo(title);
 	return NextResponse.json(newTodo, { status: 201 });
 }
 
+// タイトル更新
 export async function PUT(req: NextRequest) {
 	const { id, title } = await req.json();
-	todos = todos.map((t) => (t.id === id ? { ...t, title } : t));
-	return NextResponse.json({ success: true });
+	const status = updateTodo(id, title);
+	return NextResponse.json({ success: status });
 }
 
+// 完了状態のトグル
 export async function PATCH(req: NextRequest) {
 	const { id } = await req.json();
-	todos = todos.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t));
-	return NextResponse.json({ success: true });
+	const status = toggleTodo(id);
+	return NextResponse.json({ success: status });
 }
 
+// 削除
 export async function DELETE(req: NextRequest) {
 	const { id } = await req.json();
-	todos = todos.filter((t) => t.id !== id);
-	return NextResponse.json({ success: true });
+	const status = deleteTodo(id);
+	return NextResponse.json({ success: status });
 }

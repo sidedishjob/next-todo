@@ -1,80 +1,62 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import useLoading from './useLoading';
+import useSWR, { mutate } from 'swr';
 import { Todo } from '@/types/todo';
-
-import {
-	getAllTodos,
-	getTodoById,
-	addTodo,
-	updateTodoTitleInDB,
-	toggleTodoInDB,
-	deleteTodo,
-} from '../db/indexeddb';
+import { fetcher } from '@/lib/fetcher';
+import { API_ROUTES } from '@/lib/apiRoutes';
 
 // Todo用のカスタムフック（状態管理 + 永続化）
 export default function useTodos() {
-	const [todos, setTodos] = useState<Todo[]>([]);
-	const { isLoading, startLoading, stopLoading } = useLoading(true);
+	const { data, error, isLoading } = useSWR<Todo[]>(API_ROUTES.todos, fetcher);
 
-	// 初期表示時にIndexedDBからデータを取得
-	useEffect(() => {
-		const init = async () => {
-			startLoading();
-			const data = await getAllTodos();
-			setTodos(data);
-			stopLoading();
-		};
-		init();
-	}, [startLoading, stopLoading]);
-
-	// IndexedDBからidを指定して取得
-	const getById = useCallback(async (id: number): Promise<Todo | undefined> => {
-		return await getTodoById(id);
-	}, []);
-
-	// Todoを追加する
-	const add = async (title: string): Promise<void> => {
-		const newTodo = {
-			title,
-			completed: false,
-			createdAt: new Date().toISOString(),
-			updatedAt: new Date().toISOString(),
-		};
-		const id = await addTodo(newTodo);
-		setTodos((prev) => [...prev, { ...newTodo, id }]);
+	// 追加
+	const add = async (title: string) => {
+		await fetch(API_ROUTES.todos, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ title }),
+		});
+		mutate(API_ROUTES.todos);
 	};
 
-	// タイトルを更新する（DB & State)
-	const handleUpdateTitle = async (id: number, newTitle: string): Promise<void> => {
-		const updated = await updateTodoTitleInDB(id, newTitle);
-		if (!updated) return;
-
-		setTodos((prev) => prev.map((t) => (t.id === id ? updated : t)));
+	// タイトル更新
+	const updateTitle = async (id: number, title: string) => {
+		await fetch(API_ROUTES.todos, {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ id, title }),
+		});
+		mutate(API_ROUTES.todos);
 	};
 
-	// 完了状態を切り替える（DB & State）
-	const handleToggleTodo = async (id: number): Promise<void> => {
-		const updated = await toggleTodoInDB(id);
-		if (!updated) return;
-
-		setTodos((prev) => prev.map((t) => (t.id === id ? updated : t)));
+	// 完了状態のトグル
+	const toggleTodo = async (id: number) => {
+		await fetch(API_ROUTES.todos, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ id }),
+		});
+		mutate(API_ROUTES.todos);
 	};
 
-	// Todoを削除する
-	const remove = async (id: number): Promise<void> => {
-		await deleteTodo(id);
-		setTodos((prev) => prev.filter((t) => t.id !== id));
+	// 削除
+	const remove = async (id: number) => {
+		await fetch(API_ROUTES.todos, {
+			method: 'DELETE',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ id }),
+		});
+		mutate(API_ROUTES.todos);
 	};
 
 	return {
-		todos,
+		todos: data ?? [],
 		isLoading,
-		getById,
+		error,
 		add,
-		updateTitle: handleUpdateTitle,
-		toggleTodo: handleToggleTodo,
+		updateTitle,
+		toggleTodo,
 		remove,
+		refreshTodos: () => mutate(API_ROUTES.todos),
 	};
 }
