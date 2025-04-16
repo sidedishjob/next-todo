@@ -6,16 +6,8 @@ import { Todo } from '@/types/todo';
 import { fetcher } from '@/lib/fetcher';
 
 export default function ApiTestPage() {
-	// const [todos, setTodos] = useState<Todo[]>([]);
 	const { data: todos, error, isLoading } = useSWR<Todo[]>('/api/todos', fetcher);
 	const [newTitle, setNewTitle] = useState<string>('');
-
-	// // APIからTodoを取得
-	// const fetchTodos = async () => {
-	// 	const res = await fetch('api/todos');
-	// 	const data = await res.json();
-	// 	setTodos(data);
-	// };
 
 	// 新しいTodoを追加
 	const addTodo = async () => {
@@ -27,7 +19,6 @@ export default function ApiTestPage() {
 		});
 		setNewTitle('');
 		// 登録した内容を再表示
-		// await fetchTodos();
 		mutate('/api/todos'); // SWRのキャッシュ更新+再取得
 	};
 
@@ -35,10 +26,6 @@ export default function ApiTestPage() {
 		e.preventDefault();
 		addTodo();
 	};
-
-	// useEffect(() => {
-	// 	fetchTodos();
-	// }, []);
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">
