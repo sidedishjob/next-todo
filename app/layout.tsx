@@ -1,6 +1,5 @@
 import './globals.css';
 import AppLayout from '@/layouts/AppLayout';
-import { ThemeProvider } from '@/components/ThemeProvider';
 
 export const metadata = {
 	title: {
@@ -14,9 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="ja" suppressHydrationWarning>
 			<body className="bg-white text-black dark:bg-zinc-900 dark:text-white transition-colors">
-				<ThemeProvider>
-					<AppLayout>{children}</AppLayout>
-				</ThemeProvider>
+				<AppLayout>{children}</AppLayout>
 			</body>
 		</html>
 	);
