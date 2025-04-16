@@ -8,6 +8,7 @@ import {
 	FiSettings,
 	FiBook,
 	FiTrello,
+	FiGrid,
 	FiSun,
 	FiMoon,
 	FiXCircle,
@@ -26,6 +27,7 @@ const getPageTitle = (pathname: string) => {
 	if (pathname === '/about') return 'アプリについて';
 	if (pathname === '/news') return 'お知らせ';
 	if (pathname === '/api-test') return 'APIテスト';
+	if (pathname === '/todos-methods') return '学習トップページ';
 	return 'ページ';
 };
 
@@ -41,6 +43,7 @@ const navItems = [
 		label: 'APIテスト',
 		extraClass: 'text-red-400 hover:text-red-700',
 	},
+	{ href: '/todos-methods', icon: FiGrid, label: '学習トップページ' },
 ];
 
 export default function AppLayout({ children }: AppLayoutProps) {
