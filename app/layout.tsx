@@ -1,4 +1,5 @@
 import './globals.css';
+import Providers from '@/components/Providers';
 import AppLayout from '@/layouts/AppLayout';
 
 export const metadata = {
@@ -13,7 +14,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="ja" suppressHydrationWarning>
 			<body className="bg-white text-black dark:bg-zinc-900 dark:text-white transition-colors">
-				<AppLayout>{children}</AppLayout>
+				<Providers>
+					<AppLayout>{children}</AppLayout>
+				</Providers>
 			</body>
 		</html>
 	);

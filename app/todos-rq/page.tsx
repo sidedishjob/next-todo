@@ -1,10 +1,10 @@
 'use client';
 
-import useTodosRq from '@/hooks/useTodoRq';
+import useTodosReactQuery from '@/hooks/useTodoReactQuery';
 import { LoadingSpinner } from '@/components/TodoAnimations';
 
 export default function TodosFetchPage() {
-	const { todos, isLoading, error } = useTodosRq();
+	const { todos, isLoading, error } = useTodosReactQuery();
 
 	if (isLoading) return <LoadingSpinner />;
 	if (error) return <p>Error: {error.message}</p>;
