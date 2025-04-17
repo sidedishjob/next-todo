@@ -33,7 +33,13 @@ export async function PATCH(req: NextRequest) {
 
 // 削除
 export async function DELETE(req: NextRequest) {
-	const { id } = await req.json();
+	const { searchParams } = new URL(req.url);
+	const id = Number(searchParams.get('id'));
+
+	if (!id) {
+		return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+	}
+
 	const status = deleteTodo(id);
-	return NextResponse.json({ success: status });
+	return new Response(null, { status: status ? 204 : 404 });
 }
