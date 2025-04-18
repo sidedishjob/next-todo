@@ -5,7 +5,7 @@ import useSWR, { mutate } from 'swr';
 import { Todo } from '@/types/todo';
 import { fetcher } from '@/lib/fetcher';
 import { API_ROUTES } from '@/lib/apiRoutes';
-import { LoadingSpinner } from './TodoAnimations';
+import { LoadingSpinner } from '../../components/TodoAnimations';
 import { FiClipboard } from 'react-icons/fi';
 
 export default function ApiTestClient() {
