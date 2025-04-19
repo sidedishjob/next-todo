@@ -1,39 +1,48 @@
+/**
+ * 共通API処理モジュール
+ */
+
 export async function request<T>(url: string, options?: RequestInit): Promise<T> {
 	const res = await fetch(url, {
-		headers: { 'Content-Type': 'application/json' },
+		headers: {
+			'Content-Type': 'application/json',
+			...(options?.headers || {}),
+		},
 		...options,
 	});
 
+	// 通信が失敗した場合にエラーを投げる
 	if (!res.ok) {
-		// 必要に応じて error logging や redirect 処理追加
-		throw new Error(`API error: ${res.status}`);
+		throw new Error(`API Error: ${res.status}`);
 	}
+
+	// レスポンスにボディがある場合のみjsonで返す
+	if (res.status === 204) return {} as T;
 
 	return res.json();
 }
 
-// HTTPメソッドごとのラッパー関数
-export const get = <T>(url: string) => request<T>(url);
+export const get = <T>(url: string): Promise<T> => request<T>(url);
 
-export const post = <T>(url: string, body: unknown) =>
+export const post = <T>(url: string, body: unknown): Promise<T> =>
 	request<T>(url, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
 
-export const put = <T>(url: string, body: unknown) =>
+export const put = <T>(url: string, body: unknown): Promise<T> =>
 	request<T>(url, {
 		method: 'PUT',
 		body: JSON.stringify(body),
 	});
 
-export const patch = <T>(url: string, body: unknown) =>
+export const patch = <T>(url: string, body: unknown): Promise<T> =>
 	request<T>(url, {
 		method: 'PATCH',
 		body: JSON.stringify(body),
 	});
 
-export const del = <T>(url: string) =>
+export const del = <T>(url: string): Promise<T> =>
 	request<T>(url, {
 		method: 'DELETE',
 	});
