@@ -2,62 +2,41 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { API_ROUTES } from '@/lib/apiRoutes';
+import { get, post, put, patch, del } from '@/lib/api';
 import { Todo } from '@/types/todo';
-
-const fetchTodos = async (): Promise<Todo[]> => {
-	const res = await fetch(API_ROUTES.todos);
-	if (!res.ok) throw new Error('Failed to fetch todos');
-	return res.json();
-};
 
 export default function useTodosReactQuery() {
 	const queryClient = useQueryClient();
-	const { data, isLoading, error } = useQuery({
+
+	// Todo一覧取得（GET）
+	const { data, error, isLoading } = useQuery<Todo[]>({
 		queryKey: ['todos'],
-		queryFn: fetchTodos,
+		queryFn: () => get<Todo[]>(API_ROUTES.todos),
 	});
 
-	// 追加
+	// 追加（POST）
 	const add = useMutation({
-		mutationFn: async (title: string) => {
-			await fetch(API_ROUTES.todos, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ title }),
-			});
-		},
+		mutationFn: (title: string) => post(API_ROUTES.todos, { title }),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
 	});
 
-	// タイトル更新
+	// タイトル更新（PUT）
 	const updateTitle = useMutation({
-		mutationFn: async ({ id, title }: { id: number; title: string }) => {
-			await fetch(API_ROUTES.todos, {
-				method: 'PUT',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ id, title }),
-			});
-		},
+		mutationFn: ({ id, title }: { id: number; title: string }) =>
+			put(API_ROUTES.todos, { id, title }),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
 	});
 
-	// 完了状態のトグル
+	// 完了状態のトグル（PATCH）
 	const toggleTodo = useMutation({
-		mutationFn: async ({ id, completed }: { id: number; completed: boolean }) => {
-			await fetch(API_ROUTES.todos, {
-				method: 'PATCH',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ id, completed }),
-			});
-		},
+		mutationFn: ({ id, completed }: { id: number; completed: boolean }) =>
+			patch(API_ROUTES.todos, { id, completed }),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
 	});
 
-	// 削除
+	// 削除（DELETE）
 	const remove = useMutation({
-		mutationFn: async (id: number) => {
-			await fetch(`${API_ROUTES.todos}?id=${id}`, { method: 'DELETE' });
-		},
+		mutationFn: (id: number) => del(`${API_ROUTES.todos}?id=${id}`),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
 	});
 
