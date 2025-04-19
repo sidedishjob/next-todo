@@ -1,1 +1,3 @@
-export const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { get } from './api';
+
+export const fetcher = <T>(url: string): Promise<T> => get<T>(url);
