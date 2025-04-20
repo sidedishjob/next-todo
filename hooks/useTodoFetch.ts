@@ -2,21 +2,27 @@
 
 import { useEffect, useState } from 'react';
 import { API_ROUTES } from '@/lib/apiRoutes';
-import { get, post, put, patch, del } from '@/lib/api';
+import { get, post, put, patch, del, ApiError } from '@/lib/api';
 import { Todo } from '@/types/todo';
 
 export default function useTodosFetch() {
 	const [todos, setTodos] = useState<Todo[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState<Error | null>(null);
+	const [error, setError] = useState<string | null>(null);
 
 	const fetchTodos = async () => {
 		try {
 			setIsLoading(true);
+			setError(null);
 			const data = await get<Todo[]>(API_ROUTES.todos);
 			setTodos(data);
 		} catch (err) {
-			throw new Error('取得に失敗しました');
+			if (err instanceof ApiError) {
+				setError(`取得エラー: ${err.message} (status: ${err.status})`);
+			} else {
+				console.error('想定外エラー:', err);
+				setError('Todoの取得に失敗しました。');
+			}
 		} finally {
 			setIsLoading(false);
 		}

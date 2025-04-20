@@ -31,7 +31,7 @@ export default function TodosFetchClient() {
 	};
 
 	if (isLoading) return <LoadingSpinner />;
-	if (error) return <p className="text-red-500">Error: {error.message}</p>;
+	if (error) return <p className="text-red-500">Error: {error}</p>;
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">

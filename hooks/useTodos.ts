@@ -4,7 +4,7 @@ import useSWR, { mutate } from 'swr';
 import { Todo } from '@/types/todo';
 import { fetcher } from '@/lib/fetcher';
 import { API_ROUTES } from '@/lib/apiRoutes';
-import { get, post, put, patch, del } from '@/lib/api';
+import { post, put, patch, del } from '@/lib/api';
 
 // Todo用のカスタムフック（状態管理 + 永続化）
 export default function useTodos() {
