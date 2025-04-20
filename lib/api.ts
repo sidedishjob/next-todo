@@ -2,24 +2,48 @@
  * 共通API処理モジュール
  */
 
-export async function request<T>(url: string, options?: RequestInit): Promise<T> {
-	const res = await fetch(url, {
-		headers: {
-			'Content-Type': 'application/json',
-			...(options?.headers || {}),
-		},
-		...options,
-	});
+/**
+ * APIエラーの構造化クラス
+ */
+export class ApiError extends Error {
+	status: number;
 
-	// 通信が失敗した場合にエラーを投げる
-	if (!res.ok) {
-		throw new Error(`API Error: ${res.status}`);
+	constructor(message: string, status: number) {
+		super(message);
+		this.name = 'ApiError';
+		this.status = status;
 	}
+}
 
-	// レスポンスにボディがある場合のみjsonで返す
-	if (res.status === 204) return {} as T;
+export async function request<T>(url: string, options?: RequestInit): Promise<T> {
+	try {
+		const res = await fetch(url, {
+			headers: {
+				'Content-Type': 'application/json',
+				...(options?.headers || {}),
+			},
+			...options,
+		});
 
-	return res.json();
+		// 通信が失敗した場合にエラーを投げる
+		if (!res.ok) {
+			const errorBody = await res.json().catch(() => ({}));
+			const message = errorBody.message || res.statusText || 'API Error';
+			throw new ApiError(message, res.status);
+		}
+
+		// レスポンスにボディがある場合のみjsonで返す
+		if (res.status === 204) return {} as T;
+
+		return res.json();
+	} catch (err) {
+		if (err instanceof ApiError) {
+			throw err;
+		} else {
+			console.log('ネットワークエラー:', err);
+			throw new ApiError('ネットワークエラーが発生しました', 0);
+		}
+	}
 }
 
 export const get = <T>(url: string): Promise<T> => request<T>(url);
