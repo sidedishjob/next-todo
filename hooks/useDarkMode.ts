@@ -3,6 +3,7 @@
 import useSWR, { mutate } from 'swr';
 import { fetcher } from '@/lib/fetcher';
 import { API_ROUTES } from '@/lib/apiRoutes';
+import { post } from '@/lib/api';
 import { useEffect } from 'react';
 
 type ThemeValue = 'light' | 'dark';
@@ -20,11 +21,7 @@ export default function useDarkMode() {
 	const toggleTheme = async () => {
 		const newTheme: ThemeValue = isDark ? 'light' : 'dark';
 
-		await fetch(API_ROUTES.settings.theme, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ theme: newTheme }),
-		});
+		await post(API_ROUTES.settings.theme, { newTheme });
 		mutate(API_ROUTES.settings.theme);
 	};
 
