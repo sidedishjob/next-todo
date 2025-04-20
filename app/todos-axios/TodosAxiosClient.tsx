@@ -5,7 +5,8 @@ import useTodosAxios from '@/hooks/useTodoAxios';
 import { LoadingSpinner } from '@/components/TodoAnimations';
 
 export default function TodosAxiosClient() {
-	const { todos, isLoading, error, add, updateTitle, toggleTodo, remove } = useTodosAxios();
+	const { todos, isLoading, error, addTodo, updateTitle, toggleTodo, removeTodo } =
+		useTodosAxios();
 
 	const [newTitle, setNewTitle] = useState('');
 	const [editingId, setEditingId] = useState<number | null>(null);
@@ -13,7 +14,7 @@ export default function TodosAxiosClient() {
 
 	const handleAdd = () => {
 		if (!newTitle.trim()) return;
-		add(newTitle);
+		addTodo(newTitle);
 		setNewTitle('');
 	};
 
@@ -104,7 +105,7 @@ export default function TodosAxiosClient() {
 										編集
 									</button>
 									<button
-										onClick={() => remove(todo.id)}
+										onClick={() => removeTodo(todo.id)}
 										className="text-red-500 hover:underline"
 									>
 										削除

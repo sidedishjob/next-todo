@@ -5,16 +5,16 @@ import TodoAppUI from '@/components/TodoAppUI';
 
 // 状態を管理し、UI層に渡すだけのコンテナ
 export default function TodoContainer() {
-	const { todos, isLoading, add, updateTitle, toggleTodo, remove } = useTodos();
+	const { todos, isLoading, addTodo, updateTitle, toggleTodo, removeTodo } = useTodos();
 
 	return (
 		<TodoAppUI
 			todos={todos}
 			isLoading={isLoading}
-			add={add}
+			addTodo={addTodo}
 			updateTitle={updateTitle}
 			toggleTodo={toggleTodo}
-			remove={remove}
+			removeTodo={removeTodo}
 		/>
 	);
 }

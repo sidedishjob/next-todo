@@ -22,7 +22,7 @@ export default function useTodosAxios() {
 	}, []);
 
 	// 追加
-	const add = async (title: string) => {
+	const addTodo = async (title: string) => {
 		await axios.post(API_ROUTES.todos, { title });
 		await fetchTodos();
 	};
@@ -40,10 +40,10 @@ export default function useTodosAxios() {
 	};
 
 	// 削除
-	const remove = async (id: number) => {
+	const removeTodo = async (id: number) => {
 		await axios.delete(API_ROUTES.todos, { params: { id } });
 		await fetchTodos();
 	};
 
-	return { todos, isLoading, error, add, updateTitle, toggleTodo, remove };
+	return { todos, isLoading, error, addTodo, updateTitle, toggleTodo, removeTodo };
 }

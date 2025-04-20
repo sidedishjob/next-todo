@@ -5,7 +5,8 @@ import useTodosReactQuery from '@/hooks/useTodoReactQuery';
 import { LoadingSpinner } from '@/components/TodoAnimations';
 
 export default function TodosReactQueryClient() {
-	const { todos, isLoading, error, add, updateTitle, toggleTodo, remove } = useTodosReactQuery();
+	const { todos, isLoading, error, addTodo, updateTitle, toggleTodo, removeTodo } =
+		useTodosReactQuery();
 
 	const [newTitle, setNewTitle] = useState('');
 	const [editingId, setEditingId] = useState<number | null>(null);
@@ -13,7 +14,7 @@ export default function TodosReactQueryClient() {
 
 	const handleAdd = () => {
 		if (!newTitle.trim()) return;
-		add(newTitle);
+		addTodo(newTitle);
 		setNewTitle('');
 	};
 
@@ -106,7 +107,7 @@ export default function TodosReactQueryClient() {
 										編集
 									</button>
 									<button
-										onClick={() => remove(todo.id)}
+										onClick={() => removeTodo(todo.id)}
 										className="text-red-500 hover:underline"
 									>
 										削除

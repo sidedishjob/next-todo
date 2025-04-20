@@ -5,7 +5,8 @@ import useTodosFetch from '@/hooks/useTodoFetch';
 import { LoadingSpinner } from '@/components/TodoAnimations';
 
 export default function TodosFetchClient() {
-	const { todos, isLoading, error, add, updateTitle, toggleTodo, remove } = useTodosFetch();
+	const { todos, isLoading, error, addTodo, updateTitle, toggleTodo, removeTodo } =
+		useTodosFetch();
 
 	const [newTitle, setNewTitle] = useState('');
 	const [editingId, setEditingId] = useState<number | null>(null);
@@ -13,7 +14,7 @@ export default function TodosFetchClient() {
 
 	const handleAdd = () => {
 		if (!newTitle.trim()) return;
-		add(newTitle);
+		addTodo(newTitle);
 		setNewTitle('');
 	};
 
@@ -104,7 +105,7 @@ export default function TodosFetchClient() {
 										編集
 									</button>
 									<button
-										onClick={() => remove(todo.id)}
+										onClick={() => removeTodo(todo.id)}
 										className="text-red-500 hover:underline"
 									>
 										削除

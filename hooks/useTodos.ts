@@ -11,7 +11,7 @@ export default function useTodos() {
 	const { data, error, isLoading } = useSWR<Todo[]>(API_ROUTES.todos, fetcher);
 
 	// 追加
-	const add = async (title: string) => {
+	const addTodo = async (title: string) => {
 		await post(API_ROUTES.todos, { title });
 		mutate(API_ROUTES.todos);
 	};
@@ -29,7 +29,7 @@ export default function useTodos() {
 	};
 
 	// 削除
-	const remove = async (id: number) => {
+	const removeTodo = async (id: number) => {
 		await del(`${API_ROUTES.todos}?id=${id}`);
 		mutate(API_ROUTES.todos);
 	};
@@ -38,10 +38,10 @@ export default function useTodos() {
 		todos: data ?? [],
 		isLoading,
 		error,
-		add,
+		addTodo,
 		updateTitle,
 		toggleTodo,
-		remove,
+		removeTodo,
 		refreshTodos: () => mutate(API_ROUTES.todos),
 	};
 }

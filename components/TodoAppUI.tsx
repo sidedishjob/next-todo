@@ -8,19 +8,19 @@ import { Todo } from '@/types/todo';
 interface TodoAppUIProps {
 	todos: Todo[];
 	isLoading: boolean;
-	add: (title: string) => Promise<void>;
+	addTodo: (title: string) => Promise<void>;
 	updateTitle: (id: number, newTitle: string) => Promise<void>;
 	toggleTodo: (id: number) => Promise<void>;
-	remove: (id: number) => Promise<void>;
+	removeTodo: (id: number) => Promise<void>;
 }
 
 export default function TodoAppUI({
 	todos,
 	isLoading,
-	add,
+	addTodo,
 	updateTitle,
 	toggleTodo,
-	remove,
+	removeTodo,
 }: TodoAppUIProps) {
 	return (
 		<div className={'p-4 sm:p-6 md:p-8'}>
@@ -29,7 +29,7 @@ export default function TodoAppUI({
 					<TodoHeader />
 				</div>
 
-				<TodoInput add={add} />
+				<TodoInput addTodo={addTodo} />
 
 				<main className="min-h-[300px]">
 					{isLoading ? (
@@ -39,7 +39,7 @@ export default function TodoAppUI({
 							todos={todos}
 							updateTitle={updateTitle}
 							toggleTodo={toggleTodo}
-							remove={remove}
+							removeTodo={removeTodo}
 						/>
 					)}
 				</main>

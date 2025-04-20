@@ -12,10 +12,10 @@ interface TodoItemProps {
 	todo: Todo;
 	updateTitle: (id: number, newTitle: string) => Promise<void>;
 	toggleTodo: (id: number) => Promise<void>;
-	remove: (id: number) => Promise<void>;
+	removeTodo: (id: number) => Promise<void>;
 }
 
-export default function TodoItem({ todo, updateTitle, toggleTodo, remove }: TodoItemProps) {
+export default function TodoItem({ todo, updateTitle, toggleTodo, removeTodo }: TodoItemProps) {
 	const router = useRouter();
 	const [isCompleting, setIsCompleting] = useState(false);
 	// タスク名編集フラグの状態
@@ -77,7 +77,7 @@ export default function TodoItem({ todo, updateTitle, toggleTodo, remove }: Todo
 
 	const handleDeleteClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation();
-		remove(todo.id);
+		removeTodo(todo.id);
 	};
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

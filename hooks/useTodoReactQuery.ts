@@ -15,7 +15,7 @@ export default function useTodosReactQuery() {
 	});
 
 	// 追加（POST）
-	const add = useMutation({
+	const addTodo = useMutation({
 		mutationFn: (title: string) => post(API_ROUTES.todos, { title }),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
 	});
@@ -35,7 +35,7 @@ export default function useTodosReactQuery() {
 	});
 
 	// 削除（DELETE）
-	const remove = useMutation({
+	const removeTodo = useMutation({
 		mutationFn: (id: number) => del(`${API_ROUTES.todos}?id=${id}`),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
 	});
@@ -44,9 +44,9 @@ export default function useTodosReactQuery() {
 		todos: data ?? [],
 		isLoading,
 		error,
-		add: add.mutate,
+		addTodo: addTodo.mutate,
 		updateTitle: updateTitle.mutate,
 		toggleTodo: toggleTodo.mutate,
-		remove: remove.mutate,
+		removeTodo: removeTodo.mutate,
 	};
 }

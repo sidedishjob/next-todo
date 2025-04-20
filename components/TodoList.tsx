@@ -6,10 +6,10 @@ interface TodoListProps {
 	todos: Todo[];
 	updateTitle: (id: number, newTitle: string) => Promise<void>;
 	toggleTodo: (id: number) => Promise<void>;
-	remove: (id: number) => Promise<void>;
+	removeTodo: (id: number) => Promise<void>;
 }
 
-export default function TodoList({ todos, updateTitle, toggleTodo, remove }: TodoListProps) {
+export default function TodoList({ todos, updateTitle, toggleTodo, removeTodo }: TodoListProps) {
 	if (todos.length === 0) {
 		return (
 			<div className="py-10 text-center text-gray-500">
@@ -28,7 +28,7 @@ export default function TodoList({ todos, updateTitle, toggleTodo, remove }: Tod
 					todo={todo}
 					updateTitle={updateTitle}
 					toggleTodo={toggleTodo}
-					remove={remove}
+					removeTodo={removeTodo}
 				/>
 			))}
 		</div>

@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { todoTitleSchema } from '@/lib/validation/todoSchema';
 
 interface TodoInputProps {
-	add: (title: string) => Promise<void>;
+	addTodo: (title: string) => Promise<void>;
 }
 
-export default function TodoInput({ add }: TodoInputProps) {
+export default function TodoInput({ addTodo }: TodoInputProps) {
 	const [inputValue, setInputValue] = useState<string>('');
 	const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +22,7 @@ export default function TodoInput({ add }: TodoInputProps) {
 		}
 
 		setError(null);
-		add(inputValue);
+		addTodo(inputValue);
 		setInputValue('');
 	};
 
