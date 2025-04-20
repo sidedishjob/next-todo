@@ -21,7 +21,7 @@ export default function useDarkMode() {
 	const toggleTheme = async () => {
 		const newTheme: ThemeValue = isDark ? 'light' : 'dark';
 
-		await post(API_ROUTES.settings.theme, { newTheme });
+		await post(API_ROUTES.settings.theme, { theme: newTheme });
 		mutate(API_ROUTES.settings.theme);
 	};
 
