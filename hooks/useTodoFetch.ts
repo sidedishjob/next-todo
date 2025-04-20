@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { API_ROUTES } from '@/lib/apiRoutes';
+import { get, post, put, patch, del } from '@/lib/api';
 import { Todo } from '@/types/todo';
 
 export default function useTodosFetch() {
@@ -10,53 +11,42 @@ export default function useTodosFetch() {
 	const [error, setError] = useState<Error | null>(null);
 
 	const fetchTodos = async () => {
-		const res = await fetch(API_ROUTES.todos);
-		if (!res.ok) throw new Error('Failed to fetch todos');
-		const data = await res.json();
-		setTodos(data);
+		try {
+			setIsLoading(true);
+			const data = await get<Todo[]>(API_ROUTES.todos);
+			setTodos(data);
+		} catch (err) {
+			throw new Error('取得に失敗しました');
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	useEffect(() => {
-		fetchTodos()
-			.catch(setError)
-			.finally(() => setIsLoading(false));
+		fetchTodos();
 	}, []);
 
 	// 追加
 	const add = async (title: string) => {
-		await fetch(API_ROUTES.todos, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ title }),
-		});
+		await post(API_ROUTES.todos, { title });
 		await fetchTodos();
 	};
 
 	// タイトル更新
 	const updateTitle = async (id: number, title: string) => {
-		await fetch(API_ROUTES.todos, {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ id, title }),
-		});
+		await put(API_ROUTES.todos, { id, title });
 		await fetchTodos();
 	};
 
 	// 完了状態のトグル
 	const toggleTodo = async (id: number, completed: boolean) => {
-		await fetch(API_ROUTES.todos, {
-			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ id, completed }),
-		});
+		await patch(API_ROUTES.todos, { id, completed });
 		await fetchTodos();
 	};
 
 	// 削除
 	const remove = async (id: number) => {
-		await fetch(`${API_ROUTES.todos}?id=${id}`, {
-			method: 'DELETE',
-		});
+		await del(`${API_ROUTES.todos}?id=${id}`);
 		await fetchTodos();
 	};
 
