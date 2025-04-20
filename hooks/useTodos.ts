@@ -4,6 +4,7 @@ import useSWR, { mutate } from 'swr';
 import { Todo } from '@/types/todo';
 import { fetcher } from '@/lib/fetcher';
 import { API_ROUTES } from '@/lib/apiRoutes';
+import { get, post, put, patch, del } from '@/lib/api';
 
 // Todo用のカスタムフック（状態管理 + 永続化）
 export default function useTodos() {
@@ -11,41 +12,25 @@ export default function useTodos() {
 
 	// 追加
 	const add = async (title: string) => {
-		await fetch(API_ROUTES.todos, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ title }),
-		});
+		await post(API_ROUTES.todos, { title });
 		mutate(API_ROUTES.todos);
 	};
 
 	// タイトル更新
 	const updateTitle = async (id: number, title: string) => {
-		await fetch(API_ROUTES.todos, {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ id, title }),
-		});
+		await put(API_ROUTES.todos, { id, title });
 		mutate(API_ROUTES.todos);
 	};
 
 	// 完了状態のトグル
 	const toggleTodo = async (id: number) => {
-		await fetch(API_ROUTES.todos, {
-			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ id }),
-		});
+		await patch(API_ROUTES.todos, { id });
 		mutate(API_ROUTES.todos);
 	};
 
 	// 削除
 	const remove = async (id: number) => {
-		await fetch(API_ROUTES.todos, {
-			method: 'DELETE',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ id }),
-		});
+		await del(`${API_ROUTES.todos}?id=${id}`);
 		mutate(API_ROUTES.todos);
 	};
 
