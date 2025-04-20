@@ -2,38 +2,26 @@
 
 import { useState } from 'react';
 import useSWR, { mutate } from 'swr';
+import { LoadingSpinner } from '@/components/TodoAnimations';
 import { Todo } from '@/types/todo';
+import { post } from '@/lib/api';
 import { fetcher } from '@/lib/fetcher';
 import { API_ROUTES } from '@/lib/apiRoutes';
-import { LoadingSpinner } from '../../components/TodoAnimations';
 import { FiClipboard } from 'react-icons/fi';
 
 export default function ApiTestClient() {
 	const { data: todos, error, isLoading } = useSWR<Todo[]>('/api/todos', fetcher);
 	const [newTitle, setNewTitle] = useState<string>('');
 
-	// 新しいTodoを追加
-	const addTodo = async () => {
-		if (!newTitle) return;
-
-		try {
-			const res = await fetch(API_ROUTES.todos, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ title: newTitle }),
-			});
-			if (!res.ok) throw new Error('登録に失敗しました。');
-
-			setNewTitle('');
-			mutate(API_ROUTES.todos);
-		} catch (err) {
-			console.log('Todo追加エラー:', err);
-		}
+	const addTodo = async (title: string) => {
+		await post(API_ROUTES.todos, { title });
+		setNewTitle('');
+		mutate(API_ROUTES.todos);
 	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		addTodo();
+		addTodo(newTitle);
 	};
 
 	if (isLoading || !todos) return <LoadingSpinner />;
