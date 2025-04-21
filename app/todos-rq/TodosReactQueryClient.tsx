@@ -5,8 +5,10 @@ import useTodosReactQuery from '@/hooks/useTodoReactQuery';
 import { LoadingSpinner } from '@/components/TodoAnimations';
 
 export default function TodosReactQueryClient() {
-	const { todos, isLoading, error, addTodo, updateTitle, toggleTodo, removeTodo } =
-		useTodosReactQuery();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const { todos, isLoading, addTodo, updateTitle, toggleTodo, removeTodo } =
+		useTodosReactQuery(setErrorMessage);
 
 	const [newTitle, setNewTitle] = useState('');
 	const [editingId, setEditingId] = useState<number | null>(null);
@@ -31,7 +33,7 @@ export default function TodosReactQueryClient() {
 	};
 
 	if (isLoading) return <LoadingSpinner />;
-	if (error) return <p>Error: {error.message}</p>;
+	if (errorMessage) return <p className="text-red-500">Error: {errorMessage}</p>;
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">
