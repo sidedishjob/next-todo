@@ -22,7 +22,7 @@ interface AppLayoutProps {
 
 const getPageTitle = (pathname: string) => {
 	if (pathname === '/') return 'Todo App for Next';
-	if (pathname.startsWith('/todo/')) return 'Todo の詳細';
+	if (pathname.startsWith('/todos/')) return 'Todo の詳細';
 	if (pathname === '/settings') return '設定';
 	if (pathname === '/about') return 'アプリについて';
 	if (pathname === '/news') return 'お知らせ';

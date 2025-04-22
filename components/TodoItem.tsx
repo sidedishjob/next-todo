@@ -196,7 +196,7 @@ export default function TodoItem({ todo, updateTitle, toggleTodo, removeTodo }: 
 
 			<div className="flex items-center gap-2">
 				<button
-					onClick={() => router.push(`/todo/${todo.id}`)}
+					onClick={() => router.push(`/todos/${todo.id}`)}
 					className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-primary transition-opacity duration-200"
 					aria-label="詳細ページへ"
 				>
