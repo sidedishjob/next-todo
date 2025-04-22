@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import {
 	FiHome,
@@ -47,7 +47,8 @@ const navItems = [
 ];
 
 export default function AppLayout({ children }: AppLayoutProps) {
-	const { isDark, toggleTheme } = useDarkMode();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const { isDark, toggleTheme } = useDarkMode(setErrorMessage);
 	const router = useRouter();
 	const pathname = usePathname();
 
@@ -102,6 +103,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
 					{pageTitle}
 				</h1>
 			</header>
+
+			{/* ✅ ③ エラーメッセージ表示（必要ならスタイル調整可能） */}
+			{errorMessage && (
+				<div className="bg-red-100 text-red-700 p-2 rounded-md mx-4 mt-2 text-sm">
+					Error: {errorMessage}
+				</div>
+			)}
 
 			{/* ページごとの中身 */}
 			<main className="p-4 sm:p-6 md:p-8">{children}</main>
