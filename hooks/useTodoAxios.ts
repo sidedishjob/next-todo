@@ -3,47 +3,68 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_ROUTES } from '@/lib/apiRoutes';
+import { handleApiError } from '@/lib/handlers/handleApiError';
 import { Todo } from '@/types/todo';
 
-export default function useTodosAxios() {
+export default function useTodosAxios(setError?: (msg: string) => void) {
 	const [todos, setTodos] = useState<Todo[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState<Error | null>(null);
 
 	const fetchTodos = async () => {
-		const res = await axios.get<Todo[]>(API_ROUTES.todos);
-		setTodos(res.data);
+		try {
+			setIsLoading(true);
+			const res = await axios.get<Todo[]>(API_ROUTES.todos);
+			setTodos(res.data);
+		} catch (err) {
+			handleApiError(err, setError);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	useEffect(() => {
-		fetchTodos()
-			.catch((err) => setError(err))
-			.finally(() => setIsLoading(false));
+		fetchTodos();
 	}, []);
 
 	// 追加
 	const addTodo = async (title: string) => {
-		await axios.post(API_ROUTES.todos, { title });
-		await fetchTodos();
+		try {
+			await axios.post(API_ROUTES.todos, { title });
+			await fetchTodos();
+		} catch (err) {
+			handleApiError(err, setError);
+		}
 	};
 
 	// タイトル更新
 	const updateTitle = async (id: number, title: string) => {
-		await axios.put(API_ROUTES.todos, { id, title });
-		await fetchTodos();
+		try {
+			await axios.put(API_ROUTES.todos, { id, title });
+			await fetchTodos();
+		} catch (err) {
+			handleApiError(err, setError);
+		}
 	};
 
 	// 完了状態のトグル
 	const toggleTodo = async (id: number, completed: boolean) => {
-		await axios.patch(API_ROUTES.todos, { id, completed });
-		await fetchTodos();
+		try {
+			await axios.patch(API_ROUTES.todos, { id, completed });
+			await fetchTodos();
+		} catch (err) {
+			handleApiError(err, setError);
+		}
 	};
 
 	// 削除
 	const removeTodo = async (id: number) => {
-		await axios.delete(API_ROUTES.todos, { params: { id } });
-		await fetchTodos();
+		try {
+			await axios.delete(API_ROUTES.todos, { params: { id } });
+			await fetchTodos();
+		} catch (err) {
+			handleApiError(err, setError);
+		}
 	};
 
-	return { todos, isLoading, error, addTodo, updateTitle, toggleTodo, removeTodo };
+	return { todos, isLoading, addTodo, updateTitle, toggleTodo, removeTodo };
 }
