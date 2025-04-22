@@ -8,6 +8,7 @@ import { Todo } from '@/types/todo';
 interface TodoAppUIProps {
 	todos: Todo[];
 	isLoading: boolean;
+	errorMessage?: string | null;
 	addTodo: (title: string) => Promise<void>;
 	updateTitle: (id: number, newTitle: string) => Promise<void>;
 	toggleTodo: (id: number) => Promise<void>;
@@ -17,6 +18,7 @@ interface TodoAppUIProps {
 export default function TodoAppUI({
 	todos,
 	isLoading,
+	errorMessage,
 	addTodo,
 	updateTitle,
 	toggleTodo,
@@ -30,6 +32,9 @@ export default function TodoAppUI({
 				</div>
 
 				<TodoInput addTodo={addTodo} />
+
+				{/* ✅ ③ エラーメッセージ表示（必要ならスタイル調整可能） */}
+				{errorMessage && <p className="text-red-500 text-sm mt-2">Error: {errorMessage}</p>}
 
 				<main className="min-h-[300px]">
 					{isLoading ? (

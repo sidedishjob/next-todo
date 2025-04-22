@@ -4,19 +4,31 @@ import { useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { LoadingSpinner } from '@/components/TodoAnimations';
 import { Todo } from '@/types/todo';
-import { post } from '@/lib/api';
+import { ApiError, post } from '@/lib/api';
 import { fetcher } from '@/lib/fetcher';
 import { API_ROUTES } from '@/lib/apiRoutes';
 import { FiClipboard } from 'react-icons/fi';
+import { handleApiError } from '@/lib/handlers/handleApiError';
 
 export default function ApiTestClient() {
-	const { data: todos, error, isLoading } = useSWR<Todo[]>('/api/todos', fetcher);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const {
+		data: todos,
+		error,
+		isLoading,
+	} = useSWR<Todo[]>('/api/todos', fetcher, {
+		onError: (err) => handleApiError(err, setErrorMessage),
+	});
 	const [newTitle, setNewTitle] = useState<string>('');
 
 	const addTodo = async (title: string) => {
-		await post(API_ROUTES.todos, { title });
-		setNewTitle('');
-		mutate(API_ROUTES.todos);
+		try {
+			await post(API_ROUTES.todos, { title });
+			setNewTitle('');
+			mutate(API_ROUTES.todos);
+		} catch (err) {
+			handleApiError(err, setErrorMessage);
+		}
 	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,7 +37,7 @@ export default function ApiTestClient() {
 	};
 
 	if (isLoading || !todos) return <LoadingSpinner />;
-	if (error) return <p className="text-red-500">Error: {error.message}</p>;
+	if (errorMessage) return <p className="text-red-500">Error: {errorMessage}</p>;
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">

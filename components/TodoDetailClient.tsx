@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import useTodoById from '@/hooks/useTodoById';
 import { LoadingSpinner } from '@/components/TodoAnimations';
@@ -8,11 +9,14 @@ export default function TodoDetailClient() {
 	const params = useParams();
 	const id = Number(params?.id);
 
-	const { todo, isLoading, error } = useTodoById(id);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const { todo, isLoading } = useTodoById(id, setErrorMessage);
 
 	if (isLoading) return <LoadingSpinner />;
+	if (errorMessage) return <p className="text-red-500">Error: {errorMessage}</p>;
 
-	if (error || !todo) return <p className="text-gray-500">該当するTodoは存在しません。</p>;
+	if (!todo) return <p className="text-gray-500">該当するTodoは存在しません。</p>;
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">
