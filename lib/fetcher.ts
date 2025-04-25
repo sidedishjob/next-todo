@@ -1,3 +1,3 @@
-import { get } from './api';
+import { apiCaller } from './api/core/apiCaller';
 
-export const fetcher = <T>(url: string): Promise<T> => get<T>(url);
+export const fetcher = <T>(url: string): Promise<T> => apiCaller<T>('GET', url);

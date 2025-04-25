@@ -13,5 +13,8 @@ export const fetchClient = async <T>(config: {
 		throw new Error(`Fetch failed with status ${response.status}`);
 	}
 
+	// レスポンスにボディがある場合のみjsonで返す
+	if (response.status === 204) return {} as T;
+
 	return await response.json();
 };

@@ -20,12 +20,8 @@ export const updateTodoTitle = async (
 	return await apiCaller<void>('PUT', API_ROUTES.todoById(id), { title }, { client });
 };
 
-export const toggleTodo = async (
-	id: number,
-	completed: boolean,
-	client?: ClientType,
-): Promise<void> => {
-	return await apiCaller<void>('PATCH', API_ROUTES.todoById(id), { completed }, { client });
+export const toggleTodo = async (id: number, client?: ClientType): Promise<void> => {
+	return await apiCaller<void>('PATCH', API_ROUTES.todoById(id), undefined, { client });
 };
 
 export const deleteTodo = async (id: number, client?: ClientType): Promise<void> => {

@@ -11,6 +11,8 @@ export const apiCaller = async <T>(
 	body?: unknown,
 	options?: ApiCallerOptions,
 ): Promise<T> => {
+	console.log('method : ' + method);
+	console.log('url : ' + url);
 	const clientType = options?.client || 'fetch'; // デフォルトはfetch
 	const config: any = {
 		method,
@@ -25,6 +27,7 @@ export const apiCaller = async <T>(
 	if (clientType == 'axios') {
 		console.log('axiosで通信開始');
 		const response = await apiClient.request<T>(config);
+		throw new Error('テストエラー');
 		return response.data;
 	} else {
 		console.log('fetchで通信開始');
