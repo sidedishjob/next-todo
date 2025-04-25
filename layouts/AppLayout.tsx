@@ -13,7 +13,7 @@ import {
 	FiMoon,
 	FiXCircle,
 } from 'react-icons/fi';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/cn';
 import useDarkMode from '@/hooks/useDarkMode';
 
 interface AppLayoutProps {
