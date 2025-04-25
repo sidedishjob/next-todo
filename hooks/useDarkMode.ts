@@ -1,10 +1,10 @@
 'use client';
 
-import useSWR, { mutate } from 'swr';
-import { fetcher } from '@/lib/fetcher';
-import { API_ROUTES } from '@/lib/apiRoutes';
-import { post } from '@/lib/api';
 import { useEffect } from 'react';
+import useSWR, { mutate } from 'swr';
+import { updateTheme } from '@/lib/api';
+import { API_ROUTES } from '@/lib/api/routes';
+import { fetcher } from '@/lib/fetcher';
 import { handleApiError } from '@/lib/handlers/handleApiError';
 
 type ThemeValue = 'light' | 'dark';
@@ -25,7 +25,7 @@ export default function useDarkMode(setError?: (msg: string) => void) {
 		const newTheme: ThemeValue = isDark ? 'light' : 'dark';
 
 		try {
-			await post(API_ROUTES.settings.theme, { theme: newTheme });
+			await updateTheme(newTheme);
 			mutate(API_ROUTES.settings.theme);
 		} catch (err) {
 			handleApiError(err, setError);

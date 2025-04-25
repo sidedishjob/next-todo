@@ -3,9 +3,9 @@
 import useSWR, { mutate } from 'swr';
 import { Todo } from '@/types/todo';
 import { fetcher } from '@/lib/fetcher';
-import { API_ROUTES } from '@/lib/apiRoutes';
-import { post, put, patch, del } from '@/lib/api';
+import { API_ROUTES } from '@/lib/api/routes';
 import { handleApiError } from '@/lib/handlers/handleApiError';
+import { createTodo, updateTodoTitle, toggleTodo as toggleTodoApi, deleteTodo } from '@/lib/api';
 
 // Todo用のカスタムフック（状態管理 + 永続化）
 export default function useTodos(setError?: (msg: string) => void) {
@@ -13,11 +13,13 @@ export default function useTodos(setError?: (msg: string) => void) {
 		onError: (err) => handleApiError(err, setError),
 	});
 
+	const refresh = () => mutate(API_ROUTES.todos);
+
 	// 追加
 	const addTodo = async (title: string) => {
 		try {
-			await post(API_ROUTES.todos, { title });
-			mutate(API_ROUTES.todos);
+			await createTodo(title);
+			refresh();
 		} catch (err) {
 			handleApiError(err, setError);
 		}
@@ -26,8 +28,8 @@ export default function useTodos(setError?: (msg: string) => void) {
 	// タイトル更新
 	const updateTitle = async (id: number, title: string) => {
 		try {
-			await put(API_ROUTES.todos, { id, title });
-			mutate(API_ROUTES.todos);
+			await updateTodoTitle(id, title);
+			refresh();
 		} catch (err) {
 			handleApiError(err, setError);
 		}
@@ -36,8 +38,8 @@ export default function useTodos(setError?: (msg: string) => void) {
 	// 完了状態のトグル
 	const toggleTodo = async (id: number) => {
 		try {
-			await patch(API_ROUTES.todos, { id });
-			mutate(API_ROUTES.todos);
+			await toggleTodoApi(id);
+			refresh();
 		} catch (err) {
 			handleApiError(err, setError);
 		}
@@ -46,8 +48,8 @@ export default function useTodos(setError?: (msg: string) => void) {
 	// 削除
 	const removeTodo = async (id: number) => {
 		try {
-			await del(`${API_ROUTES.todos}?id=${id}`);
-			mutate(API_ROUTES.todos);
+			await deleteTodo(id);
+			refresh();
 		} catch (err) {
 			handleApiError(err, setError);
 		}
@@ -61,6 +63,6 @@ export default function useTodos(setError?: (msg: string) => void) {
 		updateTitle,
 		toggleTodo,
 		removeTodo,
-		refreshTodos: () => mutate(API_ROUTES.todos),
+		refreshTodos: refresh,
 	};
 }

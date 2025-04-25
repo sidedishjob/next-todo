@@ -1,10 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { API_ROUTES } from '@/lib/apiRoutes';
-import { get, post, put, patch, del, ApiError } from '@/lib/api';
+import { API_ROUTES } from '@/lib/api/routes';
+import { get, post, put, patch, del, ApiError } from '@/lib/_api';
 import { handleApiError } from '@/lib/handlers/handleApiError';
 import { Todo } from '@/types/todo';
+import {
+	createTodo,
+	getTodos,
+	updateTodoTitle,
+	toggleTodo as toggleTodoApi,
+	deleteTodo,
+} from '@/lib/api';
 
 export default function useTodosFetch(setError?: (msg: string) => void) {
 	const [todos, setTodos] = useState<Todo[]>([]);
@@ -12,24 +19,23 @@ export default function useTodosFetch(setError?: (msg: string) => void) {
 
 	const fetchTodos = async () => {
 		try {
-			setIsLoading(true);
-			const data = await get<Todo[]>(API_ROUTES.todos);
+			const data = await getTodos();
 			setTodos(data);
 		} catch (err) {
 			handleApiError(err, setError);
-		} finally {
-			setIsLoading(false);
 		}
 	};
 
 	useEffect(() => {
+		setIsLoading(true);
 		fetchTodos();
+		setIsLoading(false);
 	}, []);
 
 	// 追加
 	const addTodo = async (title: string) => {
 		try {
-			await post(API_ROUTES.todos, { title });
+			await createTodo(title);
 			await fetchTodos();
 		} catch (err) {
 			handleApiError(err, setError);
@@ -39,7 +45,7 @@ export default function useTodosFetch(setError?: (msg: string) => void) {
 	// タイトル更新
 	const updateTitle = async (id: number, title: string) => {
 		try {
-			await put(API_ROUTES.todos, { id, title });
+			await updateTodoTitle(id, title);
 			await fetchTodos();
 		} catch (err) {
 			handleApiError(err, setError);
@@ -47,9 +53,10 @@ export default function useTodosFetch(setError?: (msg: string) => void) {
 	};
 
 	// 完了状態のトグル
-	const toggleTodo = async (id: number, completed: boolean) => {
+	const toggleTodo = async (id: number) => {
 		try {
-			await patch(API_ROUTES.todos, { id, completed });
+			// await patch(API_ROUTES.todos, { id, completed });
+			await toggleTodoApi(id);
 			await fetchTodos();
 		} catch (err) {
 			handleApiError(err, setError);
@@ -59,7 +66,7 @@ export default function useTodosFetch(setError?: (msg: string) => void) {
 	// 削除
 	const removeTodo = async (id: number) => {
 		try {
-			await del(`${API_ROUTES.todos}?id=${id}`);
+			await deleteTodo(id);
 			await fetchTodos();
 		} catch (err) {
 			handleApiError(err, setError);

@@ -51,9 +51,9 @@ export default function useTodosAxios(setError?: (msg: string) => void) {
 	};
 
 	// 完了状態のトグル
-	const toggleTodo = async (id: number, completed: boolean) => {
+	const toggleTodo = async (id: number) => {
 		try {
-			await toggleTodoApi(id, completed, 'axios');
+			await toggleTodoApi(id, 'axios');
 			await fetchTodos();
 		} catch (err) {
 			handleApiError(err, setError);
