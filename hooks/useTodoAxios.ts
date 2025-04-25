@@ -1,10 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { API_ROUTES } from '@/lib/apiRoutes';
 import { handleApiError } from '@/lib/handlers/handleApiError';
 import { Todo } from '@/types/todo';
+import {
+	getTodos,
+	createTodo,
+	updateTodoTitle,
+	toggleTodo as toggleTodoApi,
+	deleteTodo,
+} from '@/lib/api';
 
 export default function useTodosAxios(setError?: (msg: string) => void) {
 	const [todos, setTodos] = useState<Todo[]>([]);
@@ -12,24 +17,23 @@ export default function useTodosAxios(setError?: (msg: string) => void) {
 
 	const fetchTodos = async () => {
 		try {
-			setIsLoading(true);
-			const res = await axios.get<Todo[]>(API_ROUTES.todos);
-			setTodos(res.data);
+			const data = await getTodos('axios');
+			setTodos(data);
 		} catch (err) {
 			handleApiError(err, setError);
-		} finally {
-			setIsLoading(false);
 		}
 	};
 
 	useEffect(() => {
+		setIsLoading(true);
 		fetchTodos();
+		setIsLoading(false);
 	}, []);
 
 	// 追加
 	const addTodo = async (title: string) => {
 		try {
-			await axios.post(API_ROUTES.todos, { title });
+			await createTodo(title, 'axios');
 			await fetchTodos();
 		} catch (err) {
 			handleApiError(err, setError);
@@ -39,7 +43,7 @@ export default function useTodosAxios(setError?: (msg: string) => void) {
 	// タイトル更新
 	const updateTitle = async (id: number, title: string) => {
 		try {
-			await axios.put(API_ROUTES.todos, { id, title });
+			await updateTodoTitle(id, title, 'axios');
 			await fetchTodos();
 		} catch (err) {
 			handleApiError(err, setError);
@@ -49,7 +53,7 @@ export default function useTodosAxios(setError?: (msg: string) => void) {
 	// 完了状態のトグル
 	const toggleTodo = async (id: number, completed: boolean) => {
 		try {
-			await axios.patch(API_ROUTES.todos, { id, completed });
+			await toggleTodoApi(id, completed, 'axios');
 			await fetchTodos();
 		} catch (err) {
 			handleApiError(err, setError);
@@ -59,7 +63,7 @@ export default function useTodosAxios(setError?: (msg: string) => void) {
 	// 削除
 	const removeTodo = async (id: number) => {
 		try {
-			await axios.delete(API_ROUTES.todos, { params: { id } });
+			await deleteTodo(id, 'axios');
 			await fetchTodos();
 		} catch (err) {
 			handleApiError(err, setError);
