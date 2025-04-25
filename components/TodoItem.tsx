@@ -64,15 +64,8 @@ export default function TodoItem({ todo, updateTitle, toggleTodo, removeTodo }: 
 	};
 
 	const handleTodoClick = () => {
-		if (!todo.completed) {
-			setIsCompleting(true);
-			setTimeout(() => {
-				toggleTodo(todo.id);
-				setIsCompleting(false);
-			}, 300);
-		} else {
-			toggleTodo(todo.id);
-		}
+		setIsCompleting(true);
+		toggleTodo(todo.id);
 	};
 
 	const handleDeleteClick = (e: MouseEvent<HTMLButtonElement>) => {

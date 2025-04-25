@@ -70,7 +70,7 @@ export default function TodosAxiosClient() {
 							<input
 								type="checkbox"
 								checked={todo.completed}
-								onChange={() => toggleTodo(todo.id, !todo.completed)}
+								onChange={() => toggleTodo(todo.id)}
 							/>
 							{editingId === todo.id ? (
 								<>

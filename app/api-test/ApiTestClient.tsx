@@ -4,11 +4,11 @@ import { useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { LoadingSpinner } from '@/components/TodoAnimations';
 import { Todo } from '@/types/todo';
-import { ApiError, post } from '@/lib/api';
 import { fetcher } from '@/lib/fetcher';
-import { API_ROUTES } from '@/lib/apiRoutes';
+import { API_ROUTES } from '@/lib/api/routes';
 import { FiClipboard } from 'react-icons/fi';
 import { handleApiError } from '@/lib/handlers/handleApiError';
+import { createTodo } from '@/lib/api';
 
 export default function ApiTestClient() {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -23,7 +23,7 @@ export default function ApiTestClient() {
 
 	const addTodo = async (title: string) => {
 		try {
-			await post(API_ROUTES.todos, { title });
+			await createTodo(title);
 			setNewTitle('');
 			mutate(API_ROUTES.todos);
 		} catch (err) {

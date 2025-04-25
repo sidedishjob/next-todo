@@ -70,7 +70,7 @@ export default function TodosFetchClient() {
 							<input
 								type="checkbox"
 								checked={todo.completed}
-								onChange={() => toggleTodo(todo.id, !todo.completed)}
+								onChange={() => toggleTodo(todo.id)}
 							/>
 							{editingId === todo.id ? (
 								<>

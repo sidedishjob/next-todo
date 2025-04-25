@@ -70,9 +70,7 @@ export default function TodosReactQueryClient() {
 							<input
 								type="checkbox"
 								checked={todo.completed}
-								onChange={() =>
-									toggleTodo({ id: todo.id, completed: !todo.completed })
-								}
+								onChange={() => toggleTodo(todo.id)}
 							/>
 							{editingId === todo.id ? (
 								<>
