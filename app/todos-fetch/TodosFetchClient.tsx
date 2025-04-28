@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import useTodosFetch from '@/hooks/useTodoFetch';
 import { LoadingSpinner } from '@/components/TodoAnimations';
+import { ErrorMessage } from '@/components/ErrorMessage';
+import { formatError } from '@/lib/handlers/handleApiError';
 
 export default function TodosFetchClient() {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -33,7 +35,7 @@ export default function TodosFetchClient() {
 	};
 
 	if (isLoading) return <LoadingSpinner />;
-	if (errorMessage) return <p className="text-red-500">Error: {errorMessage}</p>;
+	if (errorMessage) return <ErrorMessage message={formatError(errorMessage)} />;
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">

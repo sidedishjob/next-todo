@@ -9,6 +9,7 @@ import { API_ROUTES } from '@/lib/api/routes';
 import { FiClipboard } from 'react-icons/fi';
 import { handleApiError } from '@/lib/handlers/handleApiError';
 import { createTodo } from '@/lib/api';
+import { ErrorMessage } from '@/components/ErrorMessage';
 
 export default function ApiTestClient() {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -37,7 +38,7 @@ export default function ApiTestClient() {
 	};
 
 	if (isLoading || !todos) return <LoadingSpinner />;
-	if (errorMessage) return <p className="text-red-500">Error: {errorMessage}</p>;
+	if (errorMessage) return <ErrorMessage message={errorMessage} />;
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">
