@@ -26,3 +26,18 @@ export const handleApiError = (error: unknown, setError?: (message: string) => v
 		setError?.('予期しないエラーが発生しました');
 	}
 };
+
+/**
+ * エラーオブジェクトをメッセージ文字列に整形するユーティリティ関数
+ * @param error 受け取ったエラーオブジェクト
+ * @returns 整形後のエラーメッセージ
+ */
+export function formatError(error: unknown): string {
+	if (error instanceof Error) {
+		return error.message;
+	}
+	if (typeof error === 'string') {
+		return error;
+	}
+	return '予期しないエラーが発生しました';
+}
