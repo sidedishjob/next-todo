@@ -1,3 +1,6 @@
 import { apiCaller } from './api/core/apiCaller';
 
-export const fetcher = <T>(url: string): Promise<T> => apiCaller<T>('GET', url);
+export const fetcher = async <T>(url: string): Promise<T> => {
+	const { data } = await apiCaller<T>('GET', url);
+	return data;
+};

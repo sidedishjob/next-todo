@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { API_ROUTES } from '@/lib/api/routes';
-import { get, post, put, patch, del, ApiError } from '@/lib/_api';
 import { handleApiError } from '@/lib/handlers/handleApiError';
 import { Todo } from '@/types/todo';
 import {
