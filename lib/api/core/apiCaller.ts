@@ -1,6 +1,6 @@
 import { apiClient } from '../client';
 import { fetchClient } from '../client/fetch';
-import { ApiClientType } from './types';
+import { ApiClientType, ApiResponse } from './types';
 
 interface ApiCallerOptions {
 	client?: ApiClientType;
@@ -11,7 +11,7 @@ export const apiCaller = async <T>(
 	url: string,
 	body?: unknown,
 	options?: ApiCallerOptions,
-): Promise<T> => {
+): Promise<ApiResponse<T>> => {
 	console.log('method : ' + method);
 	console.log('url : ' + url);
 	const clientType = options?.client || 'fetch'; // デフォルトはfetch
@@ -28,7 +28,11 @@ export const apiCaller = async <T>(
 	if (clientType == 'axios') {
 		console.log('axiosで通信開始');
 		const response = await apiClient.request<T>(config);
-		return response.data;
+		// return response.data;
+		return {
+			data: response.data,
+			status: response.status,
+		};
 	} else {
 		console.log('fetchで通信開始');
 		return await fetchClient<T>(config);

@@ -1,16 +1,16 @@
 import { apiCaller } from '../core/apiCaller';
+import { ApiClientType } from '../core/types';
 import { API_ROUTES } from '../routes';
 import { Todo } from '@/types/todo';
-import { ApiClientType } from '../core/types';
-
-// type ClientType = 'axios' | 'fetch';
 
 export const getTodos = async (client?: ApiClientType): Promise<Todo[]> => {
-	return await apiCaller<Todo[]>('GET', API_ROUTES.todos, undefined, { client });
+	const { data } = await apiCaller<Todo[]>('GET', API_ROUTES.todos, undefined, { client });
+	return data;
 };
 
 export const createTodo = async (title: string, client?: ApiClientType): Promise<void> => {
-	return await apiCaller<void>('POST', API_ROUTES.todos, { title }, { client });
+	const { data } = await apiCaller<void>('POST', API_ROUTES.todos, { title }, { client });
+	return data;
 };
 
 export const updateTodoTitle = async (
@@ -18,13 +18,18 @@ export const updateTodoTitle = async (
 	title: string,
 	client?: ApiClientType,
 ): Promise<void> => {
-	return await apiCaller<void>('PUT', API_ROUTES.todoById(id), { title }, { client });
+	const { data } = await apiCaller<void>('PUT', API_ROUTES.todoById(id), { title }, { client });
+	return data;
 };
 
 export const toggleTodo = async (id: number, client?: ApiClientType): Promise<void> => {
-	return await apiCaller<void>('PATCH', API_ROUTES.todoById(id), undefined, { client });
+	const { data } = await apiCaller<void>('PATCH', API_ROUTES.todoById(id), undefined, { client });
+	return data;
 };
 
 export const deleteTodo = async (id: number, client?: ApiClientType): Promise<void> => {
-	return await apiCaller<void>('DELETE', API_ROUTES.todoById(id), undefined, { client });
+	const { data } = await apiCaller<void>('DELETE', API_ROUTES.todoById(id), undefined, {
+		client,
+	});
+	return data;
 };

@@ -1,8 +1,10 @@
+import { ApiResponse } from '../core/types';
+
 export const fetchClient = async <T>(config: {
 	method: string;
 	url: string;
 	data?: unknown;
-}): Promise<T> => {
+}): Promise<ApiResponse<T>> => {
 	const response = await fetch(config.url, {
 		method: config.method,
 		headers: { 'Content-Type': 'application/json' },
@@ -14,7 +16,17 @@ export const fetchClient = async <T>(config: {
 	}
 
 	// レスポンスにボディがある場合のみjsonで返す
-	if (response.status === 204) return {} as T;
+	if (response.status === 204) {
+		return {
+			data: null as unknown as T,
+			status: response.status,
+		};
+	}
 
-	return await response.json();
+	const responseData = await response.json();
+
+	return {
+		data: responseData as T,
+		status: response.status,
+	};
 };
