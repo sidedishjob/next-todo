@@ -1,8 +1,9 @@
 import { apiClient } from '../client';
 import { fetchClient } from '../client/fetch';
+import { ApiClientType } from './types';
 
 interface ApiCallerOptions {
-	client?: 'axios' | 'fetch';
+	client?: ApiClientType;
 }
 
 export const apiCaller = async <T>(
@@ -27,7 +28,6 @@ export const apiCaller = async <T>(
 	if (clientType == 'axios') {
 		console.log('axiosで通信開始');
 		const response = await apiClient.request<T>(config);
-		throw new Error('テストエラー');
 		return response.data;
 	} else {
 		console.log('fetchで通信開始');
