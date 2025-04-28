@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, ChangeEvent, KeyboardEvent, MouseEvent } f
 import { useRouter } from 'next/navigation';
 import { FiEdit2, FiSearch, FiTrash2 } from 'react-icons/fi';
 import { todoAppearClass, todoCompleteClass, CompletedCheck } from './TodoAnimations';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/lib/utils';
 import { todoTitleSchema } from '@/lib/validation/todoSchema';
 import { Todo } from '@/types/todo';
 

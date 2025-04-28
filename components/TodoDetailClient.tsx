@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import useTodoById from '@/hooks/useTodoById';
 import { LoadingSpinner } from '@/components/TodoAnimations';
+import { ErrorMessage } from './ErrorMessage';
+import { formatError } from '@/lib/handlers/handleApiError';
 
 export default function TodoDetailClient() {
 	const params = useParams();
@@ -14,7 +16,7 @@ export default function TodoDetailClient() {
 	const { todo, isLoading } = useTodoById(id, setErrorMessage);
 
 	if (isLoading) return <LoadingSpinner />;
-	if (errorMessage) return <p className="text-red-500">Error: {errorMessage}</p>;
+	if (errorMessage) return <ErrorMessage message={formatError(errorMessage)} />;
 
 	if (!todo) return <p className="text-gray-500">該当するTodoは存在しません。</p>;
 

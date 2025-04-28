@@ -4,6 +4,8 @@ import TodoList from './TodoList';
 import TodoStats from './TodoStats';
 import { LoadingSpinner } from './TodoAnimations';
 import { Todo } from '@/types/todo';
+import { ErrorMessage } from './ErrorMessage';
+import { formatError } from '@/lib/handlers/handleApiError';
 
 interface TodoAppUIProps {
 	todos: Todo[];
@@ -24,6 +26,8 @@ export default function TodoAppUI({
 	toggleTodo,
 	removeTodo,
 }: TodoAppUIProps) {
+	if (errorMessage) return <ErrorMessage message={formatError(errorMessage)} />;
+
 	return (
 		<div className={'p-4 sm:p-6 md:p-8'}>
 			<div className="mx-auto max-w-3xl bg-card dark:bg-card-dark shadow-lg rounded-lg p-4 sm:p-6 transition-colors duration-300">
@@ -32,9 +36,6 @@ export default function TodoAppUI({
 				</div>
 
 				<TodoInput addTodo={addTodo} />
-
-				{/* ✅ ③ エラーメッセージ表示（必要ならスタイル調整可能） */}
-				{errorMessage && <p className="text-red-500 text-sm mt-2">Error: {errorMessage}</p>}
 
 				<main className="min-h-[300px]">
 					{isLoading ? (

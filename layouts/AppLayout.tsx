@@ -13,8 +13,10 @@ import {
 	FiMoon,
 	FiXCircle,
 } from 'react-icons/fi';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/lib/utils';
+import { formatError } from '@/lib/handlers/handleApiError';
 import useDarkMode from '@/hooks/useDarkMode';
+import { ErrorMessage } from '@/components/ErrorMessage';
 
 interface AppLayoutProps {
 	children: ReactNode;
@@ -104,10 +106,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
 				</h1>
 			</header>
 
-			{/* ✅ ③ エラーメッセージ表示（必要ならスタイル調整可能） */}
+			{/* エラーメッセージ表示 */}
 			{errorMessage && (
-				<div className="bg-red-100 text-red-700 p-2 rounded-md mx-4 mt-2 text-sm">
-					Error: {errorMessage}
+				<div className="mx-4 mt-4">
+					<ErrorMessage message={formatError(errorMessage)} />
 				</div>
 			)}
 
