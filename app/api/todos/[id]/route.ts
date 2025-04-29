@@ -73,5 +73,5 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		return NextResponse.json({ error: error.message }, { status: 500 });
 	}
 
-	return new Response(null, { status: 204 });
+	return new NextResponse(null, { status: 204 });
 }
