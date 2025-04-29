@@ -24,7 +24,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		return NextResponse.json({ error: 'Title is required' }, { status: 400 });
 	}
 
-	const { error } = await supabase.from('todos').update({ title }).eq('id', id);
+	const { error } = await supabase
+		.from('todos')
+		.update({ title, updated_at: new Date().toISOString() })
+		.eq('id', id);
 
 	if (error) {
 		return NextResponse.json({ error: error.message }, { status: 500 });
@@ -50,7 +53,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 	const { error: updateError } = await supabase
 		.from('todos')
-		.update({ is_complete: !data.is_complete })
+		.update({ is_complete: !data.is_complete, updated_at: new Date().toISOString() })
 		.eq('id', id);
 
 	if (updateError) {
@@ -70,5 +73,5 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		return NextResponse.json({ error: error.message }, { status: 500 });
 	}
 
-	return NextResponse.json({}, { status: 204 });
+	return new Response(null, { status: 204 });
 }
