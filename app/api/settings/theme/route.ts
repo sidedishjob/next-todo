@@ -1,24 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSetting, updateSetting } from '@/lib/mockData';
+import { supabase } from '@/lib/supabaseClient';
 
-// 現在のテーマ（light / dark）を取得する
+// GET: テーマ（light/dark）を取得
 export async function GET() {
-	const setting = getSetting('darkMode');
-	if (!setting) {
+	// darkMode設定を取得
+	const { data, error } = await supabase
+		.from('settings')
+		.select('value')
+		.eq('key', 'darkMode')
+		.single();
+
+	if (error || !data) {
 		return NextResponse.json({ error: 'Setting not found' }, { status: 404 });
 	}
-	return NextResponse.json({ theme: setting.value });
+
+	return NextResponse.json({ theme: data.value });
 }
 
-// 設定の値を更新する
-export async function POST(req: NextRequest) {
+// PUT: テーマ更新
+export async function PUT(req: NextRequest) {
 	const { theme } = await req.json();
 
 	if (theme !== 'light' && theme !== 'dark') {
 		return NextResponse.json({ error: 'Invalid theme value' }, { status: 400 });
 	}
 
-	const ok = updateSetting('darkMode', theme);
+	const { error } = await supabase
+		.from('settings')
+		.update({ value: theme })
+		.eq('key', 'darkMode');
 
-	return NextResponse.json({ success: ok });
+	if (error) {
+		return NextResponse.json({ error: error.message }, { status: 500 });
+	}
+
+	return NextResponse.json({ success: true });
 }
