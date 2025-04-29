@@ -14,7 +14,7 @@ export const getTheme = async (): Promise<Setting> => {
  * テーマを更新するAPI（成功したら true）
  */
 export const updateTheme = async (theme: 'light' | 'dark'): Promise<void> => {
-	await apiCaller<void>('POST', API_ROUTES.settings.theme, {
+	await apiCaller<void>('PUT', API_ROUTES.settings.theme, {
 		theme,
 	});
 };
