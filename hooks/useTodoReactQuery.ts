@@ -29,21 +29,21 @@ export default function useTodosReactQuery(setError?: (msg: string) => void) {
 
 	// タイトル更新（PUT）
 	const updateTitle = useMutation({
-		mutationFn: ({ id, title }: { id: number; title: string }) => updateTodoTitle(id, title),
+		mutationFn: ({ id, title }: { id: string; title: string }) => updateTodoTitle(id, title),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
 		onError: (err) => handleApiError(err, setError),
 	});
 
 	// 完了状態のトグル（PATCH）
 	const toggleTodo = useMutation({
-		mutationFn: (id: number) => toggleTodoApi(id),
+		mutationFn: (id: string) => toggleTodoApi(id),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
 		onError: (err) => handleApiError(err, setError),
 	});
 
 	// 削除（DELETE）
 	const removeTodo = useMutation({
-		mutationFn: (id: number) => deleteTodo(id),
+		mutationFn: (id: string) => deleteTodo(id),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
 		onError: (err) => handleApiError(err, setError),
 	});

@@ -26,7 +26,7 @@ export default function useTodos(setError?: (msg: string) => void) {
 	};
 
 	// タイトル更新
-	const updateTitle = async (id: number, title: string) => {
+	const updateTitle = async (id: string, title: string) => {
 		try {
 			await updateTodoTitle(id, title);
 			refresh();
@@ -36,7 +36,7 @@ export default function useTodos(setError?: (msg: string) => void) {
 	};
 
 	// 完了状態のトグル
-	const toggleTodo = async (id: number) => {
+	const toggleTodo = async (id: string) => {
 		try {
 			await toggleTodoApi(id);
 			refresh();
@@ -46,7 +46,7 @@ export default function useTodos(setError?: (msg: string) => void) {
 	};
 
 	// 削除
-	const removeTodo = async (id: number) => {
+	const removeTodo = async (id: string) => {
 		try {
 			await deleteTodo(id);
 			refresh();

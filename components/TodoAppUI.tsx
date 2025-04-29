@@ -12,9 +12,9 @@ interface TodoAppUIProps {
 	isLoading: boolean;
 	errorMessage?: string | null;
 	addTodo: (title: string) => Promise<void>;
-	updateTitle: (id: number, newTitle: string) => Promise<void>;
-	toggleTodo: (id: number) => Promise<void>;
-	removeTodo: (id: number) => Promise<void>;
+	updateTitle: (id: string, newTitle: string) => Promise<void>;
+	toggleTodo: (id: string) => Promise<void>;
+	removeTodo: (id: string) => Promise<void>;
 }
 
 export default function TodoAppUI({

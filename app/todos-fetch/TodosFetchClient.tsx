@@ -13,7 +13,7 @@ export default function TodosFetchClient() {
 		useTodosFetch(setErrorMessage);
 
 	const [newTitle, setNewTitle] = useState('');
-	const [editingId, setEditingId] = useState<number | null>(null);
+	const [editingId, setEditingId] = useState<string | null>(null);
 	const [editTitle, setEditTitle] = useState('');
 
 	const handleAdd = () => {
@@ -22,12 +22,12 @@ export default function TodosFetchClient() {
 		setNewTitle('');
 	};
 
-	const handleEdit = (id: number, currentTitle: string) => {
+	const handleEdit = (id: string, currentTitle: string) => {
 		setEditingId(id);
 		setEditTitle(currentTitle);
 	};
 
-	const handleUpdate = (id: number) => {
+	const handleUpdate = (id: string) => {
 		if (!editTitle.trim()) return;
 		updateTitle(id, editTitle);
 		setEditingId(null);

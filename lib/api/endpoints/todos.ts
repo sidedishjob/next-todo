@@ -14,7 +14,7 @@ export const createTodo = async (title: string, client?: ApiClientType): Promise
 };
 
 export const updateTodoTitle = async (
-	id: number,
+	id: string,
 	title: string,
 	client?: ApiClientType,
 ): Promise<void> => {
@@ -22,12 +22,12 @@ export const updateTodoTitle = async (
 	return data;
 };
 
-export const toggleTodo = async (id: number, client?: ApiClientType): Promise<void> => {
+export const toggleTodo = async (id: string, client?: ApiClientType): Promise<void> => {
 	const { data } = await apiCaller<void>('PATCH', API_ROUTES.todoById(id), undefined, { client });
 	return data;
 };
 
-export const deleteTodo = async (id: number, client?: ApiClientType): Promise<void> => {
+export const deleteTodo = async (id: string, client?: ApiClientType): Promise<void> => {
 	const { data } = await apiCaller<void>('DELETE', API_ROUTES.todoById(id), undefined, {
 		client,
 	});
