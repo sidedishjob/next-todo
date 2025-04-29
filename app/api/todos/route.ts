@@ -1,18 +1,33 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getTodos, addTodo } from '@/lib/mockData';
+import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabaseClient';
 
-// 全件取得
+// GET: Todo一覧取得
 export async function GET() {
-	return NextResponse.json(getTodos());
+	const { data, error } = await supabase
+		.from('todos')
+		.select('*')
+		.order('created_at', { ascending: true });
+
+	if (error) {
+		return NextResponse.json({ error: error.message }, { status: 500 });
+	}
+
+	return NextResponse.json(data);
 }
 
-// 追加
+// POST: 新しいTodo追加
 export async function POST(req: Request) {
-	// リクエストボディからtitleを抽出
 	const { title } = await req.json();
-	if (!title || typeof title !== 'string') {
-		return NextResponse.json({ error: 'Invalid title' }, { status: 400 });
+
+	if (!title) {
+		return NextResponse.json({ error: 'Title is required' }, { status: 400 });
 	}
-	const newTodo = addTodo(title);
-	return NextResponse.json(newTodo, { status: 201 });
+
+	const { error } = await supabase.from('todos').insert({ title, is_complete: false });
+
+	if (error) {
+		return NextResponse.json({ error: error.message }, { status: 500 });
+	}
+
+	return NextResponse.json({}, { status: 201 });
 }
