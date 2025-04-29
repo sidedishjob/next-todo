@@ -9,7 +9,8 @@ import { formatError } from '@/lib/handlers/handleApiError';
 
 export default function TodoDetailClient() {
 	const params = useParams();
-	const id = params?.id;
+	const idParam = params?.id;
+	const id = Array.isArray(idParam) ? idParam[0] : idParam;
 
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
