@@ -27,7 +27,7 @@ export async function PUT(req: NextRequest) {
 
 	const { error } = await supabase
 		.from('settings')
-		.update({ value: theme })
+		.update({ value: theme, updated_at: new Date().toISOString() })
 		.eq('key', 'darkMode');
 
 	if (error) {
