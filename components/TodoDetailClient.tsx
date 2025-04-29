@@ -37,21 +37,22 @@ export default function TodoDetailClient() {
 					<span className="font-semibold">ステータス：</span>
 					<span
 						className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${
-							todo.completed
+							todo.is_complete
 								? 'bg-green-100 text-green-700'
 								: 'bg-gray-200 text-gray-600'
 						}`}
 					>
-						{todo.completed ? '完了' : '未完了'}
+						{todo.is_complete ? '完了' : '未完了'}
 					</span>
 				</p>
 
 				<p className="text-sm text-gray-500">
-					作成日時：{new Date(todo.createdAt).toLocaleString()}
+					作成日時：{new Date(todo.created_at).toLocaleString()}
+					{/* 作成日時：{new Date(todo.created_at).toISOString()} */}
 				</p>
-				{todo.updatedAt && (
+				{todo.updated_at && (
 					<p className="text-sm text-gray-500">
-						更新日時：{new Date(todo.updatedAt).toLocaleString()}
+						更新日時：{new Date(todo.updated_at).toLocaleString()}
 					</p>
 				)}
 			</div>

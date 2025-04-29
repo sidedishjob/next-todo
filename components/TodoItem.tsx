@@ -129,28 +129,28 @@ export default function TodoItem({ todo, updateTitle, toggleTodo, removeTodo }: 
 				'todo-card mb-2 flex items-center justify-between group transition-colors duration-300',
 				todoAppearClass,
 				isCompleting && todoCompleteClass,
-				todo.completed && 'bg-gray-100',
+				todo.is_complete && 'bg-gray-100',
 			)}
 		>
 			<div className="flex items-center gap-3">
 				<div className="relative flex items-center justify-center w-5 h-5">
 					<input
 						type="checkbox"
-						checked={todo.completed}
+						checked={todo.is_complete}
 						onChange={handleTodoClick}
 						className={cn(
 							'h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer',
-							todo.completed ? 'opacity-0' : 'opacity-100',
+							todo.is_complete ? 'opacity-0' : 'opacity-100',
 						)}
 					/>
-					{todo.completed && (
+					{todo.is_complete && (
 						<div className="absolute inset-0 flex items-center justify-center">
 							<CompletedCheck />
 						</div>
 					)}
 				</div>
 
-				{isEditing && !todo.completed ? (
+				{isEditing && !todo.is_complete ? (
 					<input
 						ref={inputRef}
 						type="text"
@@ -162,7 +162,7 @@ export default function TodoItem({ todo, updateTitle, toggleTodo, removeTodo }: 
 						className={cn(
 							'input p-0 h-6 text-lg transition-all duration-300',
 							'overflow-hidden text-ellipsis',
-							todo.completed && 'line-through text-gray-500',
+							todo.is_complete && 'line-through text-gray-500',
 						)}
 					/>
 				) : (
@@ -170,11 +170,11 @@ export default function TodoItem({ todo, updateTitle, toggleTodo, removeTodo }: 
 						onClick={handleTitleClick}
 						className={cn(
 							'relative h-6 group cursor-pointer text-lg transition-all duration-300 flex items-center gap-1',
-							todo.completed && 'line-through text-gray-500',
+							todo.is_complete && 'line-through text-gray-500',
 						)}
 					>
 						{todo.title}
-						{!todo.completed && (
+						{!todo.is_complete && (
 							<FiEdit2 className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 						)}
 					</span>

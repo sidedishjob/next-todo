@@ -70,7 +70,7 @@ export default function TodosReactQueryClient() {
 						<div className="flex items-center gap-2 w-full">
 							<input
 								type="checkbox"
-								checked={todo.completed}
+								checked={todo.is_complete}
 								onChange={() => toggleTodo(todo.id)}
 							/>
 							{editingId === todo.id ? (
@@ -97,7 +97,7 @@ export default function TodosReactQueryClient() {
 							) : (
 								<>
 									<span
-										className={`flex-grow ${todo.completed ? 'line-through text-gray-400' : ''}`}
+										className={`flex-grow ${todo.is_complete ? 'line-through text-gray-400' : ''}`}
 									>
 										{todo.title}
 									</span>

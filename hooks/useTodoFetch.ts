@@ -53,7 +53,6 @@ export default function useTodosFetch(setError?: (msg: string) => void) {
 	// 完了状態のトグル
 	const toggleTodo = async (id: string) => {
 		try {
-			// await patch(API_ROUTES.todos, { id, completed });
 			await toggleTodoApi(id);
 			await fetchTodos();
 		} catch (err) {

@@ -6,7 +6,7 @@ interface TodoStatsProps {
 
 export default function TodoStats({ todos }: TodoStatsProps) {
 	const total = todos.length;
-	const completed = todos.filter((todo) => todo.completed).length;
+	const completed = todos.filter((todo) => todo.is_complete).length;
 	const remaining = total - completed;
 
 	return (
