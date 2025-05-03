@@ -18,6 +18,7 @@ import { formatError } from '@/lib/handlers/handleApiError';
 import useDarkMode from '@/hooks/useDarkMode';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { useGlobalError } from '@/components/ErrorContext';
+import { Toast } from '@/components/Toast';
 
 interface AppLayoutProps {
 	children: ReactNode;
@@ -50,7 +51,7 @@ const navItems = [
 ];
 
 export default function AppLayout({ children }: AppLayoutProps) {
-	const { error, setError } = useGlobalError();
+	const { error, setError, clearError } = useGlobalError();
 	const { isDark, toggleTheme } = useDarkMode(setError);
 	const router = useRouter();
 	const pathname = usePathname();
@@ -107,19 +108,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
 				</h1>
 			</header>
 
-			{/* エラーメッセージ表示 */}
-			{/* {errorMessage && (
-				<div className="mx-4 mt-4">
-					<ErrorMessage message={formatError(errorMessage)} />
-				</div>
-			)} */}
-
-			{/* グローバルエラー表示 */}
-			{error && (
-				<div className="mx-4 mt-4">
-					<ErrorMessage message={formatError(error.message)} />
-				</div>
-			)}
+			{/* グローバルエラーを Toast で表示 */}
+			{error && <Toast message={formatError(error.message)} onClose={clearError} />}
 
 			{/* ページごとの中身 */}
 			<main className="p-4 sm:p-6 md:p-8">{children}</main>
