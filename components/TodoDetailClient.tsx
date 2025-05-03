@@ -1,23 +1,20 @@
 'use client';
 
-import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import useTodoById from '@/hooks/useTodoById';
 import { LoadingSpinner } from '@/components/TodoAnimations';
-import { ErrorMessage } from './ErrorMessage';
-import { formatError } from '@/lib/handlers/handleApiError';
+import { useGlobalError } from './ErrorContext';
 
 export default function TodoDetailClient() {
 	const params = useParams();
 	const idParam = params?.id;
 	const id = Array.isArray(idParam) ? idParam[0] : idParam;
 
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const { setError } = useGlobalError();
 
-	const { todo, isLoading } = useTodoById(id, setErrorMessage);
+	const { todo, isLoading } = useTodoById(id, setError);
 
 	if (isLoading) return <LoadingSpinner />;
-	if (errorMessage) return <ErrorMessage message={formatError(errorMessage)} />;
 
 	if (!todo) return <p className="text-gray-500">該当するTodoは存在しません。</p>;
 

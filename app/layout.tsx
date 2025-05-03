@@ -2,6 +2,7 @@ import './globals.css';
 import Providers from '@/components/Providers';
 import AppLayout from '@/layouts/AppLayout';
 import Head from './Head';
+import { ErrorProvider } from '@/components/ErrorContext';
 
 export const metadata = {
 	title: {
@@ -17,7 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<Head />
 			<body className="bg-white text-black dark:bg-zinc-900 dark:text-white transition-colors">
 				<Providers>
-					<AppLayout>{children}</AppLayout>
+					<ErrorProvider>
+						<AppLayout>{children}</AppLayout>
+					</ErrorProvider>
 				</Providers>
 			</body>
 		</html>

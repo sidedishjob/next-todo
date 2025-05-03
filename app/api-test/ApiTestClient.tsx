@@ -9,16 +9,12 @@ import { API_ROUTES } from '@/lib/api/routes';
 import { FiClipboard } from 'react-icons/fi';
 import { handleApiError } from '@/lib/handlers/handleApiError';
 import { createTodo } from '@/lib/api';
-import { ErrorMessage } from '@/components/ErrorMessage';
+import { useGlobalError } from '@/components/ErrorContext';
 
 export default function ApiTestClient() {
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const {
-		data: todos,
-		error,
-		isLoading,
-	} = useSWR<Todo[]>('/api/todos', fetcher, {
-		onError: (err) => handleApiError(err, setErrorMessage),
+	const { setError } = useGlobalError();
+	const { data: todos, isLoading } = useSWR<Todo[]>('/api/todos', fetcher, {
+		onError: (err) => handleApiError(err, setError),
 	});
 	const [newTitle, setNewTitle] = useState<string>('');
 
@@ -28,7 +24,7 @@ export default function ApiTestClient() {
 			setNewTitle('');
 			mutate(API_ROUTES.todos);
 		} catch (err) {
-			handleApiError(err, setErrorMessage);
+			handleApiError(err, setError);
 		}
 	};
 
@@ -38,7 +34,6 @@ export default function ApiTestClient() {
 	};
 
 	if (isLoading || !todos) return <LoadingSpinner />;
-	if (errorMessage) return <ErrorMessage message={errorMessage} />;
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">

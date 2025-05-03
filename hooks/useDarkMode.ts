@@ -13,7 +13,7 @@ type ThemeResponse = { theme: ThemeValue };
 /**
  * ダークモード設定を管理するカスタムフック
  */
-export default function useDarkMode(setError?: (msg: string) => void) {
+export default function useDarkMode(setError: (msg: string) => void) {
 	const { data, error, isLoading } = useSWR<ThemeResponse>(API_ROUTES.settings.theme, fetcher, {
 		onError: (err) => handleApiError(err, setError),
 	});

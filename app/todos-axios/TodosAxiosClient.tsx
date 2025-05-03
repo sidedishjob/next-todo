@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import useTodosAxios from '@/hooks/useTodoAxios';
 import { LoadingSpinner } from '@/components/TodoAnimations';
-import { ErrorMessage } from '@/components/ErrorMessage';
+import { useGlobalError } from '@/components/ErrorContext';
 
 export default function TodosAxiosClient() {
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const { setError } = useGlobalError();
 
 	const { todos, isLoading, addTodo, updateTitle, toggleTodo, removeTodo } =
-		useTodosAxios(setErrorMessage);
+		useTodosAxios(setError);
 
 	const [newTitle, setNewTitle] = useState('');
 	const [editingId, setEditingId] = useState<string | null>(null);
@@ -34,7 +34,6 @@ export default function TodosAxiosClient() {
 	};
 
 	if (isLoading) return <LoadingSpinner />;
-	if (errorMessage) return <ErrorMessage message={errorMessage} />;
 
 	return (
 		<div className="mx-auto max-w-xl bg-card dark:bg-card-dark shadow-lg rounded-lg sm:p-6 space-y-4 transition-colors duration-300">

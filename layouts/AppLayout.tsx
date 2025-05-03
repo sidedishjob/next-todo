@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import {
 	FiHome,
@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
 import { formatError } from '@/lib/handlers/handleApiError';
 import useDarkMode from '@/hooks/useDarkMode';
 import { ErrorMessage } from '@/components/ErrorMessage';
+import { useGlobalError } from '@/components/ErrorContext';
 
 interface AppLayoutProps {
 	children: ReactNode;
@@ -49,8 +50,8 @@ const navItems = [
 ];
 
 export default function AppLayout({ children }: AppLayoutProps) {
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const { isDark, toggleTheme } = useDarkMode(setErrorMessage);
+	const { error, setError } = useGlobalError();
+	const { isDark, toggleTheme } = useDarkMode(setError);
 	const router = useRouter();
 	const pathname = usePathname();
 
@@ -107,9 +108,16 @@ export default function AppLayout({ children }: AppLayoutProps) {
 			</header>
 
 			{/* エラーメッセージ表示 */}
-			{errorMessage && (
+			{/* {errorMessage && (
 				<div className="mx-4 mt-4">
 					<ErrorMessage message={formatError(errorMessage)} />
+				</div>
+			)} */}
+
+			{/* グローバルエラー表示 */}
+			{error && (
+				<div className="mx-4 mt-4">
+					<ErrorMessage message={formatError(error.message)} />
 				</div>
 			)}
 

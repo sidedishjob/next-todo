@@ -6,9 +6,12 @@ import { fetcher } from '@/lib/fetcher';
 import { API_ROUTES } from '@/lib/api/routes';
 import { handleApiError } from '@/lib/handlers/handleApiError';
 import { createTodo, updateTodoTitle, toggleTodo as toggleTodoApi, deleteTodo } from '@/lib/api';
+import { useGlobalError } from '@/components/ErrorContext';
 
 // Todo用のカスタムフック（状態管理 + 永続化）
-export default function useTodos(setError?: (msg: string) => void) {
+export default function useTodos() {
+	const { setError } = useGlobalError();
+
 	const { data, error, isLoading } = useSWR<Todo[]>(API_ROUTES.todos, fetcher, {
 		onError: (err) => handleApiError(err, setError),
 	});
